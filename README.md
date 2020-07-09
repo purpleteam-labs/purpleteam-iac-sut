@@ -9,4 +9,15 @@
 
 </div>
 
+# ACM Certificate Quota
+
+Make sure this is set to 2000 per region where we require certificates, submit support ticket if required. Although the [documentation](https://docs.aws.amazon.com/acm/latest/userguide/acm-limits.html) says it's already set at this, by default it's actually only set to 20, which means you'll run out quickly.
+
+* Region: Asia Pacific (Sydney)  
+  Limit: Number of ACM certificates  
+  New limit value: 2000
+* Region: US East (Northern Virginia)  
+  Limit: Number of ACM certificates  
+  New limit value: 2000
+
 
