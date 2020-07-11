@@ -62,3 +62,74 @@ Check the following check boxes:
 [ECS container instances not connected to the cluster](https://aws.amazon.com/premiumsupport/knowledge-center/ecs-agent-disconnected/)  
 `systemctl status ecs` for the status of the ecs agent
 
+# Terraform
+
+The architecture of this Terraform project was inspired by [this Terraform talk](https://www.hashicorp.com/resources/evolving-infrastructure-terraform-opencredo). The [how we organize terraform code at 2nd watch](https://www.2ndwatch.com/blog/how-we-organize-terraform-code-at-2nd-watch/) blog post also played a small part.
+
+The implementation of this Terraform project was [inspired](https://github.com/freedomofkeima/terraform-docker-ecs/issues/4) by [@freedomofkeima](https://github.com/freedomofkeima) with the [terraform-docker-ecs](https://github.com/freedomofkeima/terraform-docker-ecs) project.
+
+# Installing Terraform
+
+1. [Download](https://www.terraform.io/downloads.html) the Terraform zip file, the checksums, and sig file 
+2. Import the hashicorp public GPG key (first time installing only)
+3. Verify the checksum file with the sig
+4. Verify the checksum in the checksums file matches the binary  
+   Step 2,3,4 detailed [here](https://www.hashicorp.com/security)
+5. `sudo unzip ~/Downloads/terraform_[version]_linux_amd64.zip -d /opt/`
+6. `sudo ln -s /opt/terraform /usr/local/bin/terraform`
+
+Hashicorp GPG pub key on [hashicorp](https://www.hashicorp.com/security), on [keybase](https://keybase.io/hashicorp#show-public)
+
+## Install [Terragrunt](https://terragrunt.gruntwork.io/)
+
+Using the [Manual install](https://terragrunt.gruntwork.io/docs/getting-started/install/#manual-install). Similar to installing Terraform.
+
+Ask Kim for the files and where to put them. When you run `terragrunt init` from any of the Terraform roots, the top level `terragrunt.hcl` via its `before_hook`s will set the correct permissions on all relevant sensitive files.
+
+# Configuring Terraform
+
+Make sure the terraform oh-my-zsh plugin is setup. This will give you a prompt that displays which terraform workspace is selected, Ask Kim about this if unsure.
+
+Assuming the aws cli has been [configured](https://gitlab.com/purpleteam-labs/purpleteam/-/wikis/local/local-setup#validating-sam-templates)
+
+Each terraform root aws provider (in the main.tf file, or each specific root `variables.tf`) needs to specify the correct aws `profile`, if this is not correct, you could clobber or destroy an incorrect set of infrastructure. This is now configured in the top level `terragrunt.hcl` in the `inputs` block, which is `include`d in each Terraform root `terragrunt.hcl`.
+
+Create tokens for all devices that need to work with the remote state in Terraform Cloud:
+
+1. [Create](https://www.terraform.io/docs/commands/cli-config.html) `~/.terraformrc` file for each device (desktop, laptop)
+2. Add the specific devices token
+
+From each root within the terraform project run ~~`terraform init`~~ `terragrunt init`, or just watch [this video](https://www.hashicorp.com/blog/introducing-terraform-cloud-remote-state-management) and do likewise.
+
+If you run ~~`terraform plan`~~ `terragrunt plan` and receive an error similar to:  
+`Error: Failed to instantiate provider "aws" to obtain schema: fork/exec .../purpleteam-iac-sut/tf/roots/2_nw/.terraform/plugins/linux_amd64/terraform-provider-aws_v2.24.0_x4: permission denied`  
+This is probably because the executable bit is not turned on on `terraform-provider-aws_v2.24.0_x4`
+
+When creating a new Terraform root (or possibly even just workspace), make sure _Execution Mode_ is set to _Local_ rather than _Remote_ in the General Settings of the new workspace in the Web UI.
+
+# Installing Amazon ECR Credential Helper
+
+This is required to push images to ECR.
+
+When I did this, the package wasn't available for my distro, so I just downloaded the [latest binary](https://github.com/awslabs/amazon-ecr-credential-helper/releases/) and put it in the same place as terraform and symlinked it.  
+You'll also need to add the following to `~/.docker/config.json`  
+
+```json
+{
+  "credHelpers": {
+    "your_aws_account_id_here.dkr.ecr.your_aws_region_here.amazonaws.com": "ecr-login"
+  }
+}
+```
+
+Above details and more found [here](https://github.com/awslabs/amazon-ecr-credential-helper). If you have issues authenticating with ECR, follow [these steps](https://github.com/awslabs/amazon-ecr-credential-helper/issues/63#issuecomment-328318116).
+
+# Installing JQ
+
+`apt-get install jq`  
+This is used in the `buildAndDeployCloudImages.sh` script in `purpleteam-orchestrator`.
+
+# Deployment Steps (regular tf workflow)
+
+The following are the Terraform roots in this project and the order in which they should be applied:
+
