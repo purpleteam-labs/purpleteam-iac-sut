@@ -14,3 +14,11 @@ provider "aws" {
   region = var.aws_region
 }
 
+variable "cloudflare_account_id" {
+  description = "Used in cloudflare provider. Not used in this root."
+  type = string
+}
+variable "cloudflare_api_token" {
+  description = "Used in cloudflare provider. Not used in this root."
+  type = string
+}
