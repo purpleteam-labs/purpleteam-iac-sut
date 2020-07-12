@@ -20,7 +20,11 @@ Make sure this is set to 2000 per region where we require certificates, submit s
   Limit: Number of ACM certificates  
   New limit value: 2000
 
-## ECS
+# AWS Policies
+
+Set these up.
+
+# ECS
 
 Log in as root user, navigate to ECS -> Account Settings... For each region we operate in:
 
@@ -49,7 +53,7 @@ Check the following check boxes:
 * [x] Service
 * [x] Task
 
-### Resources to work the above out
+## Resources to work the above out
 
 * Google search for "[Unable to register as a container instance with ECS: InvalidParameterException: Long arn format must be enabled for tagging](https://www.google.com/search?q=Unable+to+register+as+a+container+instance+with+ECS%3A+InvalidParameterException%3A+Long+arn+format+must+be+enabled+for+tagging&oq=Unable+to+register+as+a+container+instance+with+ECS%3A+InvalidParameterException%3A+Long+arn+format+must+be+enabled+for+tagging&aqs=chrome..69i57.315j0j7&client=ubuntu&sourceid=chrome&ie=UTF-8)" which was produced in terraform apply
 * https://github.com/terraform-providers/terraform-provider-aws/issues/7373
@@ -57,7 +61,7 @@ Check the following check boxes:
 * Google search for "[ecs-agent.log Unable to register as a container instance with ECS: InvalidParameterException: Long arn](https://www.google.com/search?client=ubuntu&sxsrf=ACYBGNSsecSEtrcmODDBFnttGIK7M3Ew3g%3A1574570447565&ei=zwnaXZiLItn6rQG74oP4BQ&q=ecs-agent.log+Unable+to+register+as+a+container+instance+with+ECS%3A+InvalidParameterException%3A+Long+arn&oq=ecs-agent.log+Unable+to+register+as+a+container+instance+with+ECS%3A+InvalidParameterException%3A+Long+arn&gs_l=psy-ab.3...107682.107682..108207...0.0..0.0.0.......0....2j1..gws-wiz.nh2EDUF3_BI&ved=0ahUKEwjYrs2BhILmAhVZfSsKHTvxAF8Q4dUDCAs&uact=5)" which the ecs-agent.log was telling us
 * [Migrating your Amazon ECS deployment to the new ARN and resource ID format](https://aws.amazon.com/blogs/compute/migrating-your-amazon-ecs-deployment-to-the-new-arn-and-resource-id-format-2/)
 
-### Troubleshooting
+## Troubleshooting
 
 [ECS container instances not connected to the cluster](https://aws.amazon.com/premiumsupport/knowledge-center/ecs-agent-disconnected/)  
 `systemctl status ecs` for the status of the ecs agent
@@ -68,7 +72,7 @@ The architecture of this Terraform project was inspired by [this Terraform talk]
 
 The implementation of this Terraform project was [inspired](https://github.com/freedomofkeima/terraform-docker-ecs/issues/4) by [@freedomofkeima](https://github.com/freedomofkeima) with the [terraform-docker-ecs](https://github.com/freedomofkeima/terraform-docker-ecs) project.
 
-# Installing Terraform
+# Install Terraform
 
 1. [Download](https://www.terraform.io/downloads.html) the Terraform zip file, the checksums, and sig file 
 2. Import the hashicorp public GPG key (first time installing only)
@@ -80,13 +84,20 @@ The implementation of this Terraform project was [inspired](https://github.com/f
 
 Hashicorp GPG pub key on [hashicorp](https://www.hashicorp.com/security), on [keybase](https://keybase.io/hashicorp#show-public)
 
-## Install [Terragrunt](https://terragrunt.gruntwork.io/)
+# Install [Terragrunt](https://terragrunt.gruntwork.io/) and configure
 
-Using the [Manual install](https://terragrunt.gruntwork.io/docs/getting-started/install/#manual-install). Similar to installing Terraform.
+Using the [Manual install](https://terragrunt.gruntwork.io/docs/getting-started/install/#manual-install), similar to installing Terraform.
 
-Ask Kim for the files and where to put them. When you run `terragrunt init` from any of the Terraform roots, the top level `terragrunt.hcl` via its `before_hook`s will set the correct permissions on all relevant sensitive files.
+In the `roots` directory:
 
-# Configuring Terraform
+* Locate and rename the `common_vars.example.yaml` file to `common_vars.yaml` and configure the values within
+* Locate and rename the `terragrunt.example.hcl` file to `terragrunt.hcl` and configure the values within
+
+In each root directory add and configure:
+
+* `terragrunt.hcl`
+
+# Configure Terraform
 
 Make sure the terraform oh-my-zsh plugin is setup. This will give you a prompt that displays which terraform workspace is selected, Ask Kim about this if unsure.
 
