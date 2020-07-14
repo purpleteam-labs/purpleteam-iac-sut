@@ -93,32 +93,45 @@ In the `roots` directory:
 * Locate and rename the `common_vars.example.yaml` file to `common_vars.yaml` and configure the values within
 * Locate and rename the `terragrunt.example.hcl` file to `terragrunt.hcl` and configure the values within
 
-In each root directory add and configure:
+In each root directory add and configure the following file if it doesn't exist:
 
 * `terragrunt.hcl`
 
 # Configure Terraform
 
-Make sure the terraform oh-my-zsh plugin is setup. This will give you a prompt that displays which terraform workspace is selected, Ask Kim about this if unsure.
+Make sure the terraform oh-my-zsh plugin is setup. This will give you a prompt that displays which terraform workspace is selected, Ask me about this if unsure.
 
 Assuming the aws cli has been [configured](https://gitlab.com/purpleteam-labs/purpleteam/-/wikis/local/local-setup#validating-sam-templates)
 
-Each terraform root aws provider (in the main.tf file, or each specific root `variables.tf`) needs to specify the correct aws `profile`, if this is not correct, you could clobber or destroy an incorrect set of infrastructure. This is now configured in the top level `terragrunt.hcl` in the `inputs` block, which is `include`d in each Terraform root `terragrunt.hcl`.
+Each terraform root aws provider (in the main.tf file, or each specific root `variables.tf`) needs to specify the correct aws `profile`, if this is not correct, you could clobber or destroy an incorrect set of infrastructure. This needs to be configured in a `.env` file in the top directory of this repository. The file contents will look like the following, adjust to suite your environment:
+
+```shell
+# Used in buildAndDeployCloudImages.sh via npm script
+# Used in terragrunt.hcl to load these values into roots that require them. Double quotes are required by Terraform, otherwise it trys to interpret the values as variables. 
+AWS_REGION="your-aws-region"
+AWS_PROFILE="your-aws-profile"
+# The following variable is only used in the buildAndDeployCloudImages.sh
+AWS_ACCOUNT_ID=your-aws-account-id
+```
+
+The above values are read into all Terraform roots that specify the variables. This can be seen in the `extra_arguments "custom_env_vars_from_file"` block within the `terraform` block of the `terragrunt.hcl` in the `roots` directory that you renamed above.
+
+The `.env` file is also consumed within the `buildAndDeployCloudImages.sh` file that is executed as an npm script, where the variables from the `.env` file are exported to the current shell.
 
 Create tokens for all devices that need to work with the remote state in Terraform Cloud:
 
 1. [Create](https://www.terraform.io/docs/commands/cli-config.html) `~/.terraformrc` file for each device (desktop, laptop)
 2. Add the specific devices token
 
-From each root within the terraform project run ~~`terraform init`~~ `terragrunt init`, or just watch [this video](https://www.hashicorp.com/blog/introducing-terraform-cloud-remote-state-management) and do likewise.
+From each root within the Terraform project run ~~`terraform init`~~ `terragrunt init`, or just watch [this video](https://www.hashicorp.com/blog/introducing-terraform-cloud-remote-state-management) and do likewise.
 
 If you run ~~`terraform plan`~~ `terragrunt plan` and receive an error similar to:  
 `Error: Failed to instantiate provider "aws" to obtain schema: fork/exec .../purpleteam-iac-sut/tf/roots/2_nw/.terraform/plugins/linux_amd64/terraform-provider-aws_v2.24.0_x4: permission denied`  
 This is probably because the executable bit is not turned on on `terraform-provider-aws_v2.24.0_x4`
 
-When creating a new Terraform root (or possibly even just workspace), make sure _Execution Mode_ is set to _Local_ rather than _Remote_ in the General Settings of the new workspace in the Web UI.
+When creating a new Terraform root (or possibly even just workspace), make sure the _Execution Mode_ in the Terraform cloud is set to _Local_ rather than _Remote_ in the General Settings of the new workspace in the Web UI.
 
-# Installing Amazon ECR Credential Helper
+# Install Amazon ECR Credential Helper
 
 This is required to push images to ECR.
 
@@ -135,7 +148,7 @@ You'll also need to add the following to `~/.docker/config.json`
 
 Above details and more found [here](https://github.com/awslabs/amazon-ecr-credential-helper). If you have issues authenticating with ECR, follow [these steps](https://github.com/awslabs/amazon-ecr-credential-helper/issues/63#issuecomment-328318116).
 
-# Installing JQ
+# Install JQ
 
 `apt-get install jq`  
 This is used in the `buildAndDeployCloudImages.sh` script in `purpleteam-orchestrator`.
@@ -144,5 +157,9 @@ This is used in the `buildAndDeployCloudImages.sh` script in `purpleteam-orchest
 
 The following are the Terraform roots in this project and the order in which they should be applied:
 
-Todo ....
+1. **static** (IAM roles, policies)  
+   
+   Sometime now before you `apply` the `contOrc` root, make sure you have built the Docker images you want to host and pushed them to their ECR repositories. To do this, from the top level repository directory, run the following command:  
+   `npm run buildAndDeploySUTCloudImages`  
+
 
