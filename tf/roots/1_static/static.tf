@@ -4,7 +4,7 @@
 
 module "nodeGoat" {
   source = "../../modules/common/aws/containers/ecr/repository"
-  repository_name = "suts/node-goat"
+  repository_name = "suts/nodegoat"
 }
 
 # module "anotherSut" {
