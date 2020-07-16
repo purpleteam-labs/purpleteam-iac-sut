@@ -3,6 +3,7 @@
 locals {
   common_vars = <source of your common vars>
   // ...
+  users_dot_terraformrc_path = "${local.user_home_dir}/.terraformrc"
 }
 
 terraform {
@@ -13,12 +14,28 @@ terraform {
     ]
   }
 
+  extra_arguments "custom_env_vars_from_file" {
+    commands = [
+      "apply",
+      "plan",
+      "import",
+      "push",
+      "refresh"
+    ]
+    arguments = [
+      "-var-file=${get_terragrunt_dir()}/${find_in_parent_folders(".env")}"
+    ]
+  }
+
   // ...
+
+  before_hook "chmod_dot_terraformrc" {
+    commands = ["init"]
+    execute = ["chmod", "600", "${local.users_dot_terraformrc_path}"]
+    run_on_error = true
+  }
 }
 
 inputs = {
-  aws_region = "${local.common_vars.aws_region}"
-  aws_profile = "${local.common_vars.aws_profile}"
 
-  // ...
 }
