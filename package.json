@@ -1,0 +1,57 @@
+{
+  "name": "purpleteam-iac-sut",
+  "version": "0.1.0",
+  "description": "Infrastructure as Code for purpleteam SUTs",
+  "main": "n/a",
+  "scripts": {
+    "//": "Build System Under Test images with any required cloud build-time args and push them to their respective repositories.",
+    "dc-build-nodegoat": "docker-compose -f ../NodeGoat/docker-compose.yml build",
+    "buildAndDeploySUTCloudImages": "./buildAndDeployCloudImages.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/purpleteam-labs/purpleteam-iac-sut.git"
+  },
+  "keywords": [
+    "agile",
+    "application security",
+    "bdd",
+    "behaviour driven development",
+    "blue team",
+    "ci",
+    "cloud security",
+    "continuous deployment",
+    "continuous integration",
+    "cli",
+    "cucumber",
+    "cybersecurity",
+    "dev sec ops",
+    "red team",
+    "security",
+    "selenium",
+    "infosec",
+    "information security",
+    "tools",
+    "devsecops",
+    "devops",
+    "dev ops",
+    "purpleteam",
+    "owasp",
+    "penetration testing",
+    "purpleteam",
+    "security",
+    "security regression testing",
+    "software security",
+    "web application security",
+    "web security",
+    "zaproxy"
+  ],
+  "author": "Kim Carter",
+  "license": "",
+  "bugs": {
+    "url": "https://gitlab.com/purpleteam-labs/purpleteam-iac-sut/issues"
+  },
+  "homepage": "https://gitlab.com/purpleteam-labs/purpleteam-iac-sut#README",
+  "dependencies": {},
+  "devDependencies": {}
+}
