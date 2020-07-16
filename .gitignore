@@ -60,6 +60,7 @@ terraform.tfstate
 terraform.tfvars
 variables_override.tf
 .terraform/
+.env
 
 terragrunt.hcl
 common_vars.yaml
