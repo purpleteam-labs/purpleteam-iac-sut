@@ -22,7 +22,7 @@ echo
 echo "Tagging the images................................................................................"
 echo
 
-docker tag nodegoat_web:latest $AWS_ACCOUNT_ID.dkr.ecr.ap-southeast-2.amazonaws.com/suts/nodegoat:latest
+docker tag nodegoat_web:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/suts/nodegoat:latest
 
 echo "The following images are currently in the suts/nodegoat repository..............................."
 echo
@@ -31,7 +31,7 @@ echo
 
 echo "Pushing the new images............................................................................"
 echo
-docker push $AWS_ACCOUNT_ID.dkr.ecr.ap-southeast-2.amazonaws.com/suts/nodegoat:latest
+docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/suts/nodegoat:latest
 echo
 echo "After pushing, the following images are currently in the suts/nodegoat repository................"
 echo
