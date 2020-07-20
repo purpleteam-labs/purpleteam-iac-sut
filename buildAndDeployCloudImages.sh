@@ -7,7 +7,6 @@
 # AWS_REGION
 # AWS_PROFILE
 # AWS_ACCOUNT_ID
-
 export $(egrep -v '^#' .env | xargs)
 
 echo
@@ -26,7 +25,7 @@ docker tag nodegoat_web:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
 
 echo "The following images are currently in the suts/nodegoat repository..............................."
 echo
-echo $(aws ecr list-images --repository-name suts/nodegoat --filter tagStatus=ANY --output json --query 'imageIds[*]') | jq
+echo $(aws ecr list-images --region $AWS_REGION --repository-name suts/nodegoat --filter tagStatus=ANY --output json --query 'imageIds[*]') | jq
 echo
 
 echo "Pushing the new images............................................................................"
@@ -35,13 +34,13 @@ docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/suts/nodegoat:late
 echo
 echo "After pushing, the following images are currently in the suts/nodegoat repository................"
 echo
-echo $(aws ecr list-images --repository-name suts/nodegoat --filter tagStatus=ANY --output json --query 'imageIds[*]') | jq
+echo $(aws ecr list-images --region $AWS_REGION --repository-name suts/nodegoat --filter tagStatus=ANY --output json --query 'imageIds[*]') | jq
 echo
 echo "Waiting 8 seconds for untagging..."
 sleep 8
 echo "Deleting the following old (untagged) images in the suts/nodegoat repository....................."
 echo
-untagedNodeGoatImages=$(aws ecr list-images --repository-name suts/nodegoat --filter tagStatus=UNTAGGED --output json --query 'imageIds[*]')
+untagedNodeGoatImages=$(aws ecr list-images --region $AWS_REGION --repository-name suts/nodegoat --filter tagStatus=UNTAGGED --output json --query 'imageIds[*]')
 echo $untagedNodeGoatImages | jq
 echo
 aws ecr batch-delete-image --repository-name suts/nodegoat --image-ids "$untagedNodeGoatImages"
@@ -49,6 +48,6 @@ aws ecr batch-delete-image --repository-name suts/nodegoat --image-ids "$untaged
 echo
 echo "The following images are left in the suts/nodegoat repository...................................."
 echo
-nodeGoatImages=$(aws ecr list-images --repository-name suts/nodegoat --filter tagStatus=ANY --output json --query 'imageIds[*]')
+nodeGoatImages=$(aws ecr list-images --region $AWS_REGION --repository-name suts/nodegoat --filter tagStatus=ANY --output json --query 'imageIds[*]')
 echo $nodeGoatImages | jq
 

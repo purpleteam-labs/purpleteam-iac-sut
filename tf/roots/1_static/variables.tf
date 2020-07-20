@@ -8,15 +8,13 @@ variable "AWS_PROFILE" {
   type = string
 }
 
-variable "AWS_ACCOUNT_ID" {
-  description = "Not used. Is here to stop Terraform warnings."
-}
-
 provider "aws" {
   profile = var.AWS_PROFILE
   # Bug: region shouldn't be required but is: https://github.com/terraform-providers/terraform-provider-aws/issues/7750
   region = var.AWS_REGION
 }
+
+variable "AWS_ACCOUNT_ID" { description = "Not used. Is here to stop Terraform warnings." }
 
 variable "cloudflare_account_id" {
   description = "Used in cloudflare provider. Not used in this root."
