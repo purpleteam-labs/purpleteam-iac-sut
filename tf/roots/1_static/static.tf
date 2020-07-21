@@ -1,3 +1,17 @@
+data "aws_caller_identity" "current" {}
+
+//////////////////////////////////
+// IAM
+//////////////////////////////////
+
+module "eC2RoleForLaunchingEC2Instances" {
+  source = "../../modules/common/aws/securityIdentityCompliance/iam/1_eC2RoleForLaunchingEC2Instances"
+}
+
+
+
+
+
 //////////////////////////////////
 // ECR
 //////////////////////////////////
