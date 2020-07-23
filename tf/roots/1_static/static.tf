@@ -12,6 +12,13 @@ module "eCSRoleForECSServiceToCallELB" {
   source = "../../modules/common/aws/securityIdentityCompliance/iam/2_eCSRoleForECSServiceToCallELB"
 }
 
+module "eCSTaskRole" {
+  source = "../../modules/common/aws/securityIdentityCompliance/iam/3_eCSTaskRole"
+  aws_region = var.AWS_REGION
+  account_id = data.aws_caller_identity.current.account_id
+}
+
+
 
 
 

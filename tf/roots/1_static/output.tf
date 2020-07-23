@@ -9,3 +9,9 @@ output "ecs_service_role" {
   value = module.eCSRoleForECSServiceToCallELB.ecs_service_role
   sensitive = true
 }
+
+// ECS task role that allows your ECS container task to make calls to other AWS services.
+output "ecs_task_role" {
+  value = module.eCSTaskRole.ecs_task_role
+  sensitive = true
+}
