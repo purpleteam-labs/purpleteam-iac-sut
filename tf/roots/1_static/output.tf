@@ -15,3 +15,9 @@ output "ecs_task_role" {
   value = module.eCSTaskRole.ecs_task_role
   sensitive = true
 }
+
+// ECS task execution role that the ECS container agent and the Docker daemon can assume.
+output "ecs_task_execution_role" {
+  value = module.eCSTaskExecutionRole.ecs_task_execution_role
+  sensitive = true
+}

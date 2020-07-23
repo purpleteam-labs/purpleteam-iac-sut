@@ -18,6 +18,13 @@ module "eCSTaskRole" {
   account_id = data.aws_caller_identity.current.account_id
 }
 
+module "eCSTaskExecutionRole" {
+  source = "../../modules/common/aws/securityIdentityCompliance/iam/4_eCSTaskExecutionRole"
+  aws_iam_policy_document_ecs_task_assume_role_policy = module.eCSTaskRole.aws_iam_policy_document_ecs_task_assume_role_policy
+  aws_region = var.AWS_REGION
+  account_id = data.aws_caller_identity.current.account_id
+}
+
 
 
 
