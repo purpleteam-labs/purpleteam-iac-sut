@@ -8,6 +8,9 @@ module "eC2RoleForLaunchingEC2Instances" {
   source = "../../modules/common/aws/securityIdentityCompliance/iam/1_eC2RoleForLaunchingEC2Instances"
 }
 
+module "eCSRoleForECSServiceToCallELB" {
+  source = "../../modules/common/aws/securityIdentityCompliance/iam/2_eCSRoleForECSServiceToCallELB"
+}
 
 
 
