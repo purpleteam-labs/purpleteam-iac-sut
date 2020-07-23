@@ -21,3 +21,9 @@ output "ecs_task_execution_role" {
   value = module.eCSTaskExecutionRole.ecs_task_execution_role
   sensitive = true
 }
+
+// Consumed in api root.
+output "api_gateway_cloudwatch_role" {
+  value = module.cloudWatchRoleForAPIGateway.aws_iam_role_cloudwatch
+  sensitive = true
+}
