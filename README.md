@@ -99,7 +99,7 @@ In each root directory add and configure the following file if it doesn't exist:
 
 # Configure Terraform
 
-Make sure the terraform oh-my-zsh plugin is setup. This will give you a prompt that displays which terraform workspace is selected, Ask me about this if unsure.
+Optional: Set-up the terraform oh-my-zsh plugin. This will give you a prompt that displays which terraform workspace is selected, Ask Kim about this if unsure.
 
 Assuming the aws cli has been [configured](https://gitlab.com/purpleteam-labs/purpleteam/-/wikis/local/local-setup#validating-sam-templates)
 
@@ -114,9 +114,11 @@ AWS_PROFILE="your-aws-profile"
 AWS_ACCOUNT_ID=your-aws-account-id
 ```
 
-The above values are read into all Terraform roots that specify the variables. This can be seen in the `extra_arguments "custom_env_vars_from_file"` block within the `terraform` block of the `terragrunt.hcl` in the `roots` directory that you renamed above.
+The above values are read into all Terraform roots that specify the variables. This can be seen in the `extra_arguments "custom_env_vars_from_file"` block within the `terraform` block of the `terragrunt.hcl` in the `roots` directory.
 
 The `.env` file is also consumed within the `buildAndDeployCloudImages.sh` file that is executed as an npm script, where the variables from the `.env` file are exported to the current shell.
+
+Each root directory requires a `terraform.tfvars` file to initialise the sibling `variables.tf` variables. Don't worry, if you miss this step, Terraform will inform you.
 
 Create tokens for all devices that need to work with the remote state in Terraform Cloud:
 
