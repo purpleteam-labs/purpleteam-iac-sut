@@ -11,8 +11,14 @@ locals {
       availability_zone = "${var.AWS_REGION}b"
     }
   ]
-
-
+  public_and_2nd_mandatory_subnet_for_alb_subnet_ids = [
+    for subnet in module.subnets.pub_subnets:
+    subnet.id
+  ]
+  public_subnet_ids = [
+    for subnet in module.subnets.pub_subnets:
+    subnet.id if lookup(subnet.tags, "Name") == "public"
+  ]
 }
 
 module "vpc" {
@@ -25,4 +31,11 @@ module "subnets" {
   source = "../../modules/common/aws/network/subnets"
   vpc_id = "${module.vpc.vpc_id}"
   subnets_properties = local.subnets_properties
+}
+
+module "loadBalancer" {
+  source = "../../modules/common/aws/compute/ec2/nlb"  
+  public_subnet_ids = local.public_subnet_ids
+  vpc_id = module.vpc.vpc_id
+  suts_attributes = var.suts_attributes
 }
