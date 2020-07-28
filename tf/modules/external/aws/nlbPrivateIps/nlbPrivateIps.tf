@@ -8,12 +8,17 @@ variable "region" {
   type = string
 }
 
+variable "profile" {
+  type = string
+}
+
 data "external" "get_nlb_ips" {
   program = ["python", "${path.module}/getNlbPrivateIps.py"]
   query = {
     aws_nlb_name  = "${var.nlb_name}"
     aws_vpc_id    = "${var.vpc_id}"
     aws_region    = "${var.region}"
+    aws_profile   = "${var.profile}"
   }
 }
 

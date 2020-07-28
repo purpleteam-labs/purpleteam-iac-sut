@@ -31,7 +31,8 @@ def pretty_json(dict):
 
 
 def get_nlb_private_ips(data):
-    ec2 = boto3.client('ec2', region_name=data['aws_region'])
+    session = boto3.Session(region_name=data['aws_region'], profile_name=data['aws_profile'])
+    ec2 = session.client('ec2')
     response = ec2.describe_network_interfaces(
         Filters=[
             {
@@ -99,11 +100,16 @@ def load_json():
 
 
 def main():
+    #print sys.argv[1]
+    #print sys.argv[2]
+    #print sys.argv[3]
+    #print sys.argv[4]
     data = load_json()
     """
     print(data['aws_region'])
     print(data['aws_vpc_id'])
     print(data['aws_nlb_name'])
+    print(data['aws_profile'])
     """
     ips = get_nlb_private_ips(data)
     print(json.dumps({"private_ips": json.dumps(ips)}))
