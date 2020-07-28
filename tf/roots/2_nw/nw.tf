@@ -1,5 +1,6 @@
 locals {
   vpc_tags = { Name = "pt-vpc-${var.AWS_REGION}", source = "iac-nw" }
+  igw_tags = { Name = "pt-igw-${var.AWS_REGION}", source = "iac-nw" }
   subnets_properties = [
     {
       name = "public",
@@ -67,4 +68,12 @@ module "NACLs" {
   default_network_acl_id_of_main_vpc = "${module.vpc.default_network_acl_id_of_main_vpc}"
   pt_nACL = var.pt_nACL
   public_and_2nd_mandatory_subnet_for_lb_subnet_ids = local.public_and_2nd_mandatory_subnet_for_lb_subnet_ids
+}
+
+// Forget about the default igw, we can't modify it. Just create a new one
+// Currently this just creates the Sydney gateway for the Sydney VPC
+module "internetGateways" {
+  source = "../../modules/common/aws/network/internetGateways"
+  vpc_id = "${module.vpc.vpc_id}"
+  igw_tags = local.igw_tags
 }
