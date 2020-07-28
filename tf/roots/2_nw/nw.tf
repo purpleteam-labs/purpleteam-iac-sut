@@ -77,3 +77,12 @@ module "internetGateways" {
   vpc_id = module.vpc.vpc_id
   igw_tags = local.igw_tags
 }
+
+// This should work, but the main route table doesn't have a route 0.0.0.0/0 to the igw like the manually setup AWS env does.
+module "routeTables" {
+  source = "../../modules/common/aws/network/routeTables"
+  vpc_id = module.vpc.vpc_id
+  gateway_id = module.internetGateways.gw_id
+  public_and_2nd_mandatory_subnet_for_lb_subnet_ids = local.public_and_2nd_mandatory_subnet_for_lb_subnet_ids
+  aws_region = var.AWS_REGION
+}
