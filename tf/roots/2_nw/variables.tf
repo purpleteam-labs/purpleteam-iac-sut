@@ -42,3 +42,11 @@ variable "suts_attributes" {
     pt_lb_listener_port = number
   }))
 }
+
+variable "admin_source_ips" {
+  description = "The source IPs of our admins."
+  type = map(object({
+    description = string
+    source_ips = list(string)
+  }))  
+}
