@@ -50,3 +50,27 @@ variable "admin_source_ips" {
     source_ips = list(string)
   }))  
 }
+
+variable "pt_nACL" {
+  description = "Rules that will not change often."
+  type = object({
+    inbound_rules = list(object({
+      protocol   = string
+      rule_no    = number
+      action     = string
+      cidr_block = string
+      from_port  = number
+      to_port    = number
+      icmp_type  = number
+    }))
+    outbound_rules = list(object({
+      protocol   = string
+      rule_no    = number
+      action     = string
+      cidr_block = string
+      from_port  = number
+      to_port    = number
+      icmp_type  = number
+    }))
+  })
+}

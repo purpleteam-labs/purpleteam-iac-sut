@@ -59,3 +59,12 @@ module "securityGroups" {
   non_default_vpc_name = "${local.vpc_tags.Name}"
   aws_nlb_ips = module.nlbPrivateIps.aws_nlb_ips
 }
+
+module "NACLs" {
+  source = "../../modules/common/aws/network/aCLs"
+  vpc_id = "${module.vpc.vpc_id}"
+  default_network_acl_id_of_default_vpc = "${module.vpc.default_network_acl_id_of_default_vpc}"
+  default_network_acl_id_of_main_vpc = "${module.vpc.default_network_acl_id_of_main_vpc}"
+  pt_nACL = var.pt_nACL
+  public_and_2nd_mandatory_subnet_for_lb_subnet_ids = local.public_and_2nd_mandatory_subnet_for_lb_subnet_ids
+}
