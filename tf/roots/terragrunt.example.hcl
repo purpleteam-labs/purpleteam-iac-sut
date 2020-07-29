@@ -37,5 +37,6 @@ terraform {
 }
 
 inputs = {
-
+  purpleteamlabs_cloudflare_dns_zone_id = "<your-cloudflarea-dns-zone-id>"
+  purpleteamlabs_domain_name = "<your-domain-name.com>"
 }

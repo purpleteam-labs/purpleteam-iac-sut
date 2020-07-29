@@ -86,3 +86,18 @@ module "routeTables" {
   public_and_2nd_mandatory_subnet_for_lb_subnet_ids = local.public_and_2nd_mandatory_subnet_for_lb_subnet_ids
   aws_region = var.AWS_REGION
 }
+
+// Used by API Gateway in the api root
+module "certificateManagerGlobalAPI" {
+  source = "../../modules/common/aws//securityIdentityCompliance/certificateManagerGlobal"
+  purpleteamlabs_cloudflare_dns_zone_id = var.purpleteamlabs_cloudflare_dns_zone_id
+  purpleteamlabs_domain_name = var.purpleteamlabs_domain_name
+  invoking_root = "nw"
+  suts_attributes = var.suts_attributes
+
+  // Certificates for Cloudfront with EDGE type endpoint_configuration as opposed to REGIONAL need to be global.
+  //   The us_east_1 region is global
+  providers = {
+    aws = aws.us_east_1
+  }
+}

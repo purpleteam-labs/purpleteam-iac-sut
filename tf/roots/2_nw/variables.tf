@@ -11,6 +11,12 @@ provider "aws" {
   # Bug: region shouldn't be required but is: https://github.com/terraform-providers/terraform-provider-aws/issues/7750
   region = var.AWS_REGION
 }
+// Used for certificateManagerGlobal.
+provider "aws" {
+  profile = var.AWS_PROFILE
+  region = "us-east-1"
+  alias = "us_east_1"
+}
 
 // Issue around removing tf warnings for undeclared variables: https://github.com/hashicorp/terraform/issues/22004
 variable "AWS_ACCOUNT_ID" { description = "Not used. Is here to stop Terraform warnings." }
@@ -28,8 +34,15 @@ provider "cloudflare" {
   api_token = var.cloudflare_api_token
 }
 
+variable "purpleteamlabs_cloudflare_dns_zone_id" {
+  description = "Used for TLS cert validation for API Gateway."
+  type = string
+}
 
-
+variable "purpleteamlabs_domain_name" {
+  description = "Used for API Gateway cert creation."
+  type = string
+}
 
 variable "vpc_cidr" {
   type = string
@@ -40,6 +53,7 @@ variable "suts_attributes" {
   type = map(object({
     // Populate with properties as required
     pt_lb_listener_port = number
+    purpleteamlabs_sut_cname = string
   }))
 }
 
