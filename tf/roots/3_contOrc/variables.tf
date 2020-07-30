@@ -23,3 +23,14 @@ variable "aws_lb_target_groups" {
   description = "Used in creation of ECS Service, and Autoscaling Group."
   type = string
 }
+
+
+variable "ssm_parameters" {
+  description = "Systems Manager Parameters."
+  type = map(object({
+    type = string
+    value = string
+    description = string
+    tags = map(string)
+  }))
+}
