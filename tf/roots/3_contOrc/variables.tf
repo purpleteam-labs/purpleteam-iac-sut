@@ -34,3 +34,17 @@ variable "ssm_parameters" {
     tags = map(string)
   }))
 }
+
+variable "suts_attributes" {
+  description = "The attributes that apply to each specific SUT."  
+  type = map(object({
+    // Populate with properties as required
+    pt_lb_listener_port = number
+    purpleteamlabs_sut_cname = string
+  }))
+}
+
+variable "log_group_retention_in_days" {
+  description = "The retention in days for all CloudWatch log groups in this root."
+  default = 30
+}
