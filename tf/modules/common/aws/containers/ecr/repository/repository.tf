@@ -1,5 +1,7 @@
-resource "aws_ecr_repository" "pt" {
-  name                 = var.repository_name
+resource "aws_ecr_repository" "sut" {
+  for_each = var.suts_attributes
+
+  name                 = "suts/${each.value.purpleteamlabs_sut_cname}"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {

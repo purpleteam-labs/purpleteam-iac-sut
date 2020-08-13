@@ -33,12 +33,8 @@ module "cloudWatchRoleForAPIGateway" {
 // ECR
 //////////////////////////////////
 
-module "nodeGoat" {
+module "sut_repo" {
   source = "../../modules/common/aws/containers/ecr/repository"
-  repository_name = "suts/nodegoat"
+  suts_attributes = var.suts_attributes
 }
 
-# module "anotherSut" {
-#   source = "../../modules/common/aws/containers/ecr/repository"
-#   repository_name = "suts/somethingElse"
-# }
