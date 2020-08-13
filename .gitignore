@@ -66,6 +66,7 @@ terragrunt.hcl
 common_vars.yaml
 remote-state.tf
 
-destroyCleanup.sh
+!tf/roots/*/terragrunt.hcl
+
 graph.svg
 
