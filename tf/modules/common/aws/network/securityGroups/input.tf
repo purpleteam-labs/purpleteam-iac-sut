@@ -10,3 +10,11 @@ variable "admin_source_ips" {
 variable "non_default_vpc_name" { type = string }
 
 variable "aws_nlb_ips" {}
+
+variable "suts_attributes" {
+  description = "The attributes that apply to each specific SUT."  
+  type = map(object({
+    // Populate with properties as required
+    container_port = number
+  }))
+}

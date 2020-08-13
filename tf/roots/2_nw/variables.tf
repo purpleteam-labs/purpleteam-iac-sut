@@ -52,7 +52,8 @@ variable "suts_attributes" {
   description = "The attributes that apply to each specific SUT."  
   type = map(object({
     // Populate with properties as required
-    pt_lb_listener_port = number
+    sut_lb_listener_port = number
+    container_port = number
     purpleteamlabs_sut_cname = string
   }))
 }
@@ -65,7 +66,7 @@ variable "admin_source_ips" {
   }))  
 }
 
-variable "pt_nACL" {
+variable "sut_nACL" {
   description = "Rules that will not change often."
   type = object({
     inbound_rules = list(object({

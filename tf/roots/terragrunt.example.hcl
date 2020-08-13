@@ -15,13 +15,7 @@ terraform {
   }
 
   extra_arguments "custom_env_vars_from_file" {
-    commands = [
-      "apply",
-      "plan",
-      "import",
-      "push",
-      "refresh"
-    ]
+    commands = get_terraform_commands_that_need_vars()
     arguments = [
       "-var-file=${get_terragrunt_dir()}/${find_in_parent_folders(".env")}"
     ]

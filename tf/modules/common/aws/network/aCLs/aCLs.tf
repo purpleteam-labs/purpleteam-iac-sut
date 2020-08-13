@@ -26,14 +26,14 @@ resource "aws_default_network_acl" "main" {
 
 // Set-up pt NACL
 
-resource "aws_network_acl" "pt_nacl" {
+resource "aws_network_acl" "sut_nacl" {
 
   vpc_id = var.vpc_id
   subnet_ids = var.public_and_2nd_mandatory_subnet_for_lb_subnet_ids
 
   // Static ingress rules
   dynamic "ingress" {
-    for_each = var.pt_nACL.inbound_rules
+    for_each = var.sut_nACL.inbound_rules
     content {
       protocol = ingress.value.protocol
       rule_no = ingress.value.rule_no
@@ -47,7 +47,7 @@ resource "aws_network_acl" "pt_nacl" {
 
   // Static egress rules
   dynamic "egress" {
-    for_each = var.pt_nACL.outbound_rules
+    for_each = var.sut_nACL.outbound_rules
     content {
       // https://www.terraform.io/docs/configuration/expressions.html#null
       protocol = egress.value.protocol
@@ -61,7 +61,7 @@ resource "aws_network_acl" "pt_nacl" {
   }
 
   tags = {
-    Name = "pt_nacl",
+    Name = "sut_nacl",
     source = "iac-nw-aCLs"
   }
 }

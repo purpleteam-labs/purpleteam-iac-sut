@@ -3,6 +3,12 @@ suts_attributes:
     id: 0
     instance_type: "t3.micro"
     primary_az_suffix: "a"
-    pt_lb_listener_port: 2000
+    sut_lb_listener_port: 2000
+    container_port: 4000 # As per nodegoat Dockerfile
     ec2_instance_autoscaling_desired_capacity: 1
     purpleteamlabs_sut_cname: nodegoat
+    env:
+    - name: NODE_ENV
+      value: production
+    - name: MONGODB_URI
+      value: mongodb://mongo:27017/nodegoat

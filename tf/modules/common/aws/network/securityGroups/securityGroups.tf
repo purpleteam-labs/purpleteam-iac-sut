@@ -63,24 +63,65 @@ resource "aws_security_group_rule" "icmp" {
 
 // purpleteam
 
-resource "aws_security_group" "purpleteam" {
+resource "aws_security_group" "purpleteam_sut" {
   vpc_id       = var.vpc_id
-  name         = "purpleteam"
+  name         = "purpleteam-sut"
   description  = "NLB to SUT security group"
 
   tags = {
-    Name = "purpleteam"
+    Name = "purpleteam-sut"
     source = "iac-nw-securityGroups"
   }
 }
 
 resource "aws_security_group_rule" "purpleteam_ingress_from_nlb_for_health_check" {
-  description = "ingress from NLB for health check and purpleteam requests"
+  for_each = var.suts_attributes
+
+  description = "ingress from NLB to ${each.key} for health check and purpleteam requests"
   type = "ingress"
   protocol = "tcp"
-  from_port = 2000
-  to_port = 2000
-  security_group_id = aws_security_group.purpleteam.id
+  from_port = each.value.container_port
+  to_port = each.value.container_port
+  security_group_id = aws_security_group.purpleteam_sut.id
   cidr_blocks = var.aws_nlb_ips
 }
 
+resource "aws_security_group_rule" "purpleteam_sut_egress_80_ipv4" {
+  description = "egress for AMI installations"
+  type = "egress"
+  protocol = "tcp"
+  from_port = 80
+  to_port = 80
+  cidr_blocks = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.purpleteam_sut.id
+}
+
+resource "aws_security_group_rule" "purpleteam_sut_egress_80_ipv6" {
+  description = "egress for AMI installations"
+  type = "egress"
+  protocol = "tcp"
+  from_port = 80
+  to_port = 80
+  ipv6_cidr_blocks = ["::/0"]
+  security_group_id = aws_security_group.purpleteam_sut.id
+}
+
+resource "aws_security_group_rule" "purpleteam_sut_egress_443_ipv4" {
+  description = "egress for AMI installations"
+  type = "egress"
+  protocol = "tcp"
+  from_port = 443
+  to_port = 443
+  cidr_blocks = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.purpleteam_sut.id
+}
+
+resource "aws_security_group_rule" "purpleteam_sut_egress_443_ipv6" {
+  description = "egress for AMI installations"
+  type = "egress"
+  protocol = "tcp"
+  from_port = 443
+  to_port = 443
+  ipv6_cidr_blocks = ["::/0"]
+  security_group_id = aws_security_group.purpleteam_sut.id
+}

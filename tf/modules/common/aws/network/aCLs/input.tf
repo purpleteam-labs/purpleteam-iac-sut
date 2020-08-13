@@ -1,7 +1,7 @@
 variable "vpc_id" {}
 variable "default_network_acl_id_of_default_vpc" {}
 variable "default_network_acl_id_of_main_vpc" {}
-variable "pt_nACL" {
+variable "sut_nACL" {
   description = "Rules that will not change often."
   type = object({
     inbound_rules = list(any)

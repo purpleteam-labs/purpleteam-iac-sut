@@ -3,6 +3,6 @@ output "sg_ssh_id" {
   value = aws_security_group.ssh_access_list.id
 }
 
-output "sg_pt_id" {
-  value = aws_security_group.purpleteam.id
+output "sg_sut_id" {
+  value = aws_security_group.purpleteam_sut.id
 }

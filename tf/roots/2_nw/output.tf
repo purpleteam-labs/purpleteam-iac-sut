@@ -4,8 +4,8 @@ output "sg_ssh_id" {
   sensitive = true
 }
 
-output "sg_pt_id" {
-  value = module.securityGroups.sg_pt_id
+output "sg_sut_id" {
+  value = module.securityGroups.sg_sut_id
   sensitive = true
 }
 

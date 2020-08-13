@@ -1,6 +1,6 @@
 locals {
-  vpc_tags = { Name = "pt-vpc-${var.AWS_REGION}", source = "iac-nw" }
-  igw_tags = { Name = "pt-igw-${var.AWS_REGION}", source = "iac-nw" }
+  vpc_tags = { Name = "sut-vpc-${var.AWS_REGION}", source = "iac-nw" }
+  igw_tags = { Name = "sut-igw-${var.AWS_REGION}", source = "iac-nw" }
   subnets_properties = [
     {
       name = "public",
@@ -59,6 +59,7 @@ module "securityGroups" {
   admin_source_ips = var.admin_source_ips
   non_default_vpc_name = local.vpc_tags.Name
   aws_nlb_ips = module.nlbPrivateIps.aws_nlb_ips
+  suts_attributes = var.suts_attributes
 }
 
 module "NACLs" {
@@ -66,7 +67,7 @@ module "NACLs" {
   vpc_id = module.vpc.vpc_id
   default_network_acl_id_of_default_vpc = module.vpc.default_network_acl_id_of_default_vpc
   default_network_acl_id_of_main_vpc = module.vpc.default_network_acl_id_of_main_vpc
-  pt_nACL = var.pt_nACL
+  sut_nACL = var.sut_nACL
   public_and_2nd_mandatory_subnet_for_lb_subnet_ids = local.public_and_2nd_mandatory_subnet_for_lb_subnet_ids
 }
 
