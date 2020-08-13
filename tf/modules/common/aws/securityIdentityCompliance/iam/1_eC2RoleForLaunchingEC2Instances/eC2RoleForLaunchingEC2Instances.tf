@@ -63,12 +63,12 @@ data "aws_iam_policy_document" "ecs_instance_policy" {
   statement {
     effect = "Allow"
     actions = ["s3:ListBucket"]
-    resources = ["arn:aws:s3:::pt-public-keys"]
+    resources = ["arn:aws:s3:::sut-public-keys"]
   }
   statement {
     effect = "Allow"
     actions = ["s3:GetObject"]
-    resources = ["arn:aws:s3:::pt-public-keys/*"]
+    resources = ["arn:aws:s3:::sut-public-keys/*"]
   }
 }
 
