@@ -35,23 +35,10 @@ variable "aws_lb_target_groups" {
 //
 // ECS optimized AMIs per region
 // Updated July 2020
-
-
-
-// Test if we can SSH if we use older AMI as per purpleteam-iac above?
-
-/*
 variable "ecs_image_id" {
   default = {
     ap-southeast-1 = "ami-0bd1daf5da8a9a903" // Singapore
     ap-southeast-2 = "ami-0a7c4f7f17d3eecbc" // Sydney
-  }
-}*/
-
-variable "ecs_image_id" {
-  default = {
-    ap-southeast-1 = "ami-01f07b3fa86406c96" // Singapore
-    ap-southeast-2 = "ami-07610e278b1ddf331" // Sydney
   }
 }
 
