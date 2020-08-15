@@ -161,9 +161,12 @@ The following are the Terraform roots in this project and the order in which the
 
 1. **static** (IAM roles, policies, ECR repository creation)  
    
-   Sometime now before you `apply` the `contOrc` root, make sure you have built the Docker images you want to host and pushed them to their ECR repositories. To do this:
+   Sometime now before you `apply` the `contOrc` root, make sure you have built the Docker images you want to host and pushed them to their respective ECR repositories (created in the static root). To do this:
    * You will need to have cloned the git repositories that you want hosted in Docker containers to the same level directory that this git repository is, you can see this location specified in the npm scripts
    * From the top level directory of this repository, run the following command:  
-     `npm run buildAndDeploySUTCloudImages`  
+     `npm run buildAndDeploySUTCloudImages`
+2. **nw** (network, VPC, load balancer, api certificates)
+3. **contOrc** (SSH pub keys, EC2 Cloudwatch log groups, ECS, autoscaling)
 
+Todo
 
