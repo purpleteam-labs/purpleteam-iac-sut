@@ -9,9 +9,15 @@ locals {
   // More locals here ...
 }
 
-
+dependency "nw" {
+  config_path = "../2_nw"
+}
 
 inputs = {
+
+  // Consume nw outputs
+  aws_lb_name = dependency.nw.outputs.aws_lb_name
+  aws_lb_arn = dependency.nw.outputs.aws_lb_arn
 
 }
 
