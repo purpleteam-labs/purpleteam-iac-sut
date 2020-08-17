@@ -7,3 +7,13 @@ module "vpcLinks" {
   aws_lb_name = var.aws_lb_name
   aws_lb_arn = var.aws_lb_arn
 }
+
+module "apis" {
+  source = "../../modules/common/aws/network/apiGateway/apis"
+  suts_attributes = var.suts_attributes
+  api_gateway_cloudwatch_role = var.api_gateway_cloudwatch_role
+  vpc_link_sut_nlb_id = module.vpcLinks.aws_api_gateway_vpc_link_sut_nlb_id
+
+  stage_values = var.stage_values
+  aws_lb_dns_name = var.aws_lb_dns_name
+}

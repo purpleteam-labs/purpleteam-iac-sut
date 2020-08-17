@@ -9,16 +9,24 @@ locals {
   // More locals here ...
 }
 
+dependency "static" {
+  config_path = "../1_static"
+}
+
 dependency "nw" {
   config_path = "../2_nw"
 }
 
 inputs = {
+  // Consume static outputs
+  api_gateway_cloudwatch_role = dependency.static.outputs.api_gateway_cloudwatch_role
 
   // Consume nw outputs
   aws_lb_name = dependency.nw.outputs.aws_lb_name
   aws_lb_arn = dependency.nw.outputs.aws_lb_arn
+  aws_lb_dns_name = dependency.nw.outputs.aws_lb_dns_name
 
+  suts_attributes = local.common_vars.suts_attributes
 }
 
 

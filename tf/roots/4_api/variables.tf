@@ -24,6 +24,30 @@ variable "cloudflare_api_token" {
   type = string
 }
 
+variable "suts_attributes" {
+  description = "The attributes that apply to each specific SUT."  
+  type = map(object({
+    // Populate with properties as required
+    id = number
+    sut_lb_listener_port = number
+  }))
+}
+
+// Consume static outputs
+variable "api_gateway_cloudwatch_role" { type = string }
+
 // Consume nw outputs
 variable "aws_lb_name" { type = string }
 variable "aws_lb_arn" { type = string }
+variable "aws_lb_dns_name" { type = string }
+
+variable "stage_values" { 
+  type = map(object({
+    access_log_group_retention_in_days = number
+    execution_log_group_retention_in_days = number
+    // https://www.terraform.io/docs/providers/aws/r/api_gateway_stage.html#variables
+    variables = map(any)
+    // https://www.terraform.io/docs/providers/aws/r/api_gateway_method_settings.html#settings
+    settings = map(any)
+  }))  
+}
