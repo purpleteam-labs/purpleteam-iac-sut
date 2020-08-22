@@ -23,6 +23,23 @@ variable "cloudflare_api_token" {
   description = "Used in cloudflare provider."
   type = string
 }
+provider "cloudflare" {
+  account_id = var.cloudflare_account_id
+  api_token = var.cloudflare_api_token
+}
+
+variable "purpleteamlabs_cloudflare_dns_zone_id" {
+  description = "Used for API CNAME creation."
+  type = string
+}
+variable "purpleteamlabs_domain_name" {
+  description = "Used for API Gateway domain name."
+  type = string
+}
+variable "purpleteamlabs_sut_cname" {
+  description = "Used for Cloudlare DNS record."
+  type = string
+}
 
 variable "suts_attributes" {
   description = "The attributes that apply to each specific SUT."  
@@ -33,6 +50,14 @@ variable "suts_attributes" {
   }))
 }
 
+variable "testers_attributes" {
+  description = "The attributes that apply to each specific tester."  
+  type = map(object({
+    api_gateway_api_key = string
+    api_gateway_usage_plan = string
+  }))
+}
+
 // Consume static outputs
 variable "api_gateway_cloudwatch_role" { type = string }
 
@@ -40,6 +65,10 @@ variable "api_gateway_cloudwatch_role" { type = string }
 variable "aws_lb_name" { type = string }
 variable "aws_lb_arn" { type = string }
 variable "aws_lb_dns_name" { type = string }
+variable "api_cert_arn" {
+  description = "Arn of the api certificate."
+  type = string
+}
 
 variable "stage_values" { 
   type = map(object({
@@ -50,4 +79,20 @@ variable "stage_values" {
     // https://www.terraform.io/docs/providers/aws/r/api_gateway_method_settings.html#settings
     settings = map(any)
   }))  
+}
+variable "usage_plan_values" {
+  type = map(object({
+    stage_name = string
+    description = string
+    product_code = string
+    quota_settings = object({
+      limit  = number
+      offset = number
+      period = string
+    })
+    throttle_settings = object({
+      burst_limit = number
+      rate_limit  = number
+    })
+  }))
 }

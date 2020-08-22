@@ -43,6 +43,10 @@ variable "purpleteamlabs_domain_name" {
   description = "Used for API Gateway cert creation."
   type = string
 }
+variable "purpleteamlabs_sut_cname" {
+  description = "Used for API Gateway cert creation."
+  type = string
+}
 
 variable "vpc_cidr" {
   type = string
@@ -54,7 +58,7 @@ variable "suts_attributes" {
     // Populate with properties as required
     sut_lb_listener_port = number
     container_port = number
-    purpleteamlabs_sut_cname = string
+    name = string
   }))
 }
 

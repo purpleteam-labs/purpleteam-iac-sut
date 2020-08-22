@@ -7,7 +7,7 @@ suts_attributes:
     container_port: 4000 # As per nodegoat Dockerfile
     host_port: 4000 # As per nodegoat Dockerfile
     ec2_instance_autoscaling_desired_capacity: 1
-    purpleteamlabs_sut_cname: nodegoat
+    name: nodegoat
     env:
     - name: NODE_ENV
       value: production

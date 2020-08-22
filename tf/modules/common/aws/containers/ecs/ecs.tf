@@ -19,7 +19,7 @@ data "template_file" "sut" {
   template = "${file("${path.module}/taskDefinitions/${each.key}.tpl")}"
 
   vars = {
-    container_name = each.value.purpleteamlabs_sut_cname
+    container_name = each.value.name
     container_port = each.value.container_port
     host_port = each.value.host_port
     aws_region = var.aws_region
@@ -93,7 +93,7 @@ resource "aws_ecs_service" "sut" {
 
   load_balancer {
       target_group_arn = var.aws_lb_target_groups[each.key].arn
-      container_name = var.suts_attributes[each.key].purpleteamlabs_sut_cname
+      container_name = var.suts_attributes[each.key].name
       container_port = var.suts_attributes[each.key].container_port
   }
 

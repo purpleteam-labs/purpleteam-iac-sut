@@ -9,7 +9,7 @@ variable "suts_attributes" {
     // Populate with properties as required
     container_port = number
     host_port = number
-    purpleteamlabs_sut_cname = string
+    name = string
     env = list(object({
       name = string
       value = string

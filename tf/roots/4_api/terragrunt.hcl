@@ -25,8 +25,10 @@ inputs = {
   aws_lb_name = dependency.nw.outputs.aws_lb_name
   aws_lb_arn = dependency.nw.outputs.aws_lb_arn
   aws_lb_dns_name = dependency.nw.outputs.aws_lb_dns_name
+  api_cert_arn = dependency.nw.outputs.api_cert_arn
 
   suts_attributes = local.common_vars.suts_attributes
+  testers_attributes = local.common_vars.testers_attributes
 }
 
 

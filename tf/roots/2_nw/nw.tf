@@ -94,7 +94,7 @@ module "certificateManagerGlobalAPI" {
   purpleteamlabs_cloudflare_dns_zone_id = var.purpleteamlabs_cloudflare_dns_zone_id
   purpleteamlabs_domain_name = var.purpleteamlabs_domain_name
   invoking_root = "nw"
-  suts_attributes = var.suts_attributes
+  purpose = var.purpleteamlabs_sut_cname
 
   // Certificates for Cloudfront with EDGE type endpoint_configuration as opposed to REGIONAL need to be global.
   //   The us_east_1 region is global
