@@ -90,7 +90,7 @@ Using the [Manual install](https://terragrunt.gruntwork.io/docs/getting-started/
 
 In the `roots` directory:
 
-* Locate and rename the `common_vars.example.yaml` file to `common_vars.yaml` and configure the values within
+* Locate and rename the `common_vars.example.yaml` file to `common_vars.yaml` and configure the values within. You will need a domain.
 * Locate and rename the `terragrunt.example.hcl` file to `terragrunt.hcl` and configure the values within
 
 In each root directory add and configure the following file if it doesn't exist:
