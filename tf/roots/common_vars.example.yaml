@@ -1,9 +1,9 @@
 suts_attributes:
   sut0:
     id: 0
-    instance_type: "t3.micro"
+    instance_type: "t3.micro" # Yes it's free.
     primary_az_suffix: "a"
-    sut_lb_listener_port: 2000
+    sut_lb_listener_port: 2000 # For each new sut you add, increment this number.
     container_port: 4000 # As per nodegoat Dockerfile
     host_port: 4000 # As per nodegoat Dockerfile
     ec2_instance_autoscaling_desired_capacity: 1

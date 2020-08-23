@@ -28,7 +28,6 @@ inputs = {
   api_cert_arn = dependency.nw.outputs.api_cert_arn
 
   suts_attributes = local.common_vars.suts_attributes
-  testers_attributes = local.common_vars.testers_attributes
 }
 
 
