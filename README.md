@@ -5,9 +5,11 @@
   </a>
   <br/>
 <br/>
-<h2>purpleteam infrastructure as code for systems under test</h2><br/>
+<h2>purpleteam infrastructure as code for systems under test (SUTs)</h2><br/>
 
 </div>
+
+This is what purpleteam uses to set-up systems to attack and test that it's working as we think it should. Feel free to run yourself if you are taking purpleteam for a test drive, or just want to attack some SUTs to hone your red teaming skills.
 
 # ACM Certificate Quota
 
@@ -90,7 +92,12 @@ Using the [Manual install](https://terragrunt.gruntwork.io/docs/getting-started/
 
 In the `roots` directory:
 
-* Locate and rename the `common_vars.example.yaml` file to `common_vars.yaml` and configure the values within. You will need a domain.
+* Locate and rename the `common_vars.example.yaml` file to `common_vars.yaml` and configure the values within
+  * You will need a domain
+  * For the first (default) SUT we are using ([NodeGoat](https://github.com/OWASP/NodeGoat))
+    * You should be able to see the hosted version running at [https://nodegoat.herokuapp.com/](https://nodegoat.herokuapp.com/)
+    * Once this project is `apply`ed you should be able to see NodeGoat running at [https://nodegoat.sut.<your-domain-name.com>/](https://nodegoat.sut.your-domain-name.com/)
+  * Add as many or few SUTs as you require
 * Locate and rename the `terragrunt.example.hcl` file to `terragrunt.hcl` and configure the values within
 
 In each root directory add and configure the following file if it doesn't exist:
