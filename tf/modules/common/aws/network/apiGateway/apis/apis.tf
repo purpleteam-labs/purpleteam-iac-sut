@@ -268,5 +268,8 @@ resource "aws_api_gateway_method_settings" "sut" {
     metrics_enabled    = var.stage_values["one_and_only_stage"].settings.metrics_enabled
     data_trace_enabled = var.stage_values["one_and_only_stage"].settings.data_trace_enabled
     logging_level      = var.stage_values["one_and_only_stage"].settings.logging_level
+
+    throttling_rate_limit  = var.stage_values["one_and_only_stage"].settings.throttling_rate_limit
+    throttling_burst_limit = var.stage_values["one_and_only_stage"].settings.throttling_burst_limit
   }
 }
