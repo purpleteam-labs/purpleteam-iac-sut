@@ -92,7 +92,7 @@ module "routeTables" {
 module "certificateManagerGlobalAPI" {
   source = "../../modules/common/aws//securityIdentityCompliance/certificateManagerGlobal"
   purpleteamlabs_cloudflare_dns_zone_id = var.purpleteamlabs_cloudflare_dns_zone_id
-  purpleteamlabs_domain_name = var.purpleteamlabs_domain_name
+  purpleteamlabs_domain_name = "*.${var.purpleteamlabs_sut_cname}.${var.purpleteamlabs_domain_name}"
   invoking_root = "nw"
   purpose = var.purpleteamlabs_sut_cname
 
@@ -101,4 +101,15 @@ module "certificateManagerGlobalAPI" {
   providers = {
     aws = aws.us_east_1
   }
+}
+
+// The [A record has to exist](https://github.com/terraform-providers/terraform-provider-aws/issues/5026#issuecomment-441812939) in order to add subdomains to it in apiGateway/domainNames.
+module "cloudFlareDNSRecord" {
+  source = "../../modules/common/cloudFlare/dNSRecord"
+  purpleteamlabs_cloudflare_dns_zone_id = var.purpleteamlabs_cloudflare_dns_zone_id
+  // Any dns_name will do. This only needs to exist because the next sub domain depends on it... For example: nodegoat.sut.
+  name = "${var.purpleteamlabs_sut_cname}.${var.purpleteamlabs_domain_name}"
+  content = var.gitlab_pages_ip_address
+  type = "A"
+  proxied = true
 }

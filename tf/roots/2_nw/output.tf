@@ -56,7 +56,7 @@ output "aws_lb_dns_name" {
 #   value = module.nlbPrivateIps.aws_nlb_ips
 # }
 
-output "api_cert_arns" {
-  value = {for k, v in var.suts_attributes : k => module.certificateManagerGlobalAPI.aws_acm_certificates[k].arn}
+output "api_cert_arn" {
+  value = module.certificateManagerGlobalAPI.aws_acm_certificate.arn
   sensitive = true
 }

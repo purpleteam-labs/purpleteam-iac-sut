@@ -1,10 +1,10 @@
 resource "aws_acm_certificate" "global_cert" {
-  domain_name       = "${var.purpose}.${var.purpleteamlabs_domain_name}"
+  domain_name       = var.purpleteamlabs_domain_name
   validation_method = "DNS"
   /*
   domain_validation_options = [
     {
-      domain_name       = "sut.purpleteam-labs.com"
+      domain_name       = "*.sut.purpleteam-labs.com"
       resource_record_name = "_e0dde8f81cc1bffc894fe326d2fb0bb2.auth."
       resource_record_type = "CNAME"
       resource_record_value = "_6323566844411c14ea39db3c4d131ac6."

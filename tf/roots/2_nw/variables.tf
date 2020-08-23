@@ -48,6 +48,12 @@ variable "purpleteamlabs_sut_cname" {
   type = string
 }
 
+variable "gitlab_pages_ip_address" {
+  description = "... in domainNames.tf requires the auth subdomain to be a valid A record, any content will do, so we just use gitlab pages."
+  type = string
+  default = "35.185.44.232"
+}
+
 variable "vpc_cidr" {
   type = string
 }
