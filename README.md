@@ -172,8 +172,40 @@ The following are the Terraform roots in this project and the order in which the
    * You will need to have cloned the git repositories that you want hosted in Docker containers to the same level directory that this git repository is, you can see this location specified in the npm scripts
    * From the top level directory of this repository, run the following command:  
      `npm run buildAndDeploySUTCloudImages`
-2. **nw** (network, VPC, load balancer, api certificates)
+2. **nw** (network, VPC, load balancer, api certificates, api subdomain)
 3. **contOrc** (SSH pub keys, EC2 Cloudwatch log groups, ECS, autoscaling)
+4. **api** (SUT APIs (Api Gateway), Cloudwatch log groups, VpcLink, SUT subdomain(s))
 
-Todo
+Each root's dependencies are defined in their `terragrunt.hcl`.  
+The roots applied earliest require the least amount of ongoing changes making for faster iterative development of the later roots, for example the static root hardly ever needs re`apply`ing, the nw root usually only needs re`apply`ing when a SUT is added/removed/or with nw related modification.
 
+When we add or remove a SUT, the `nw` root onwards will need to be re-applied.
+
+We use [Terraform Cloud](https://www.terraform.io/docs/cloud/free/index.html) to [store our state remotely](https://www.hashicorp.com/blog/introducing-terraform-cloud-remote-state-management/) so each developer can [collaborate with a single source of state](https://www.hashicorp.com/blog/terraform-collaboration-for-everyone/)
+
+# Tuning AWS Permissions
+
+Getting AWS permissions right can be a pain. This is how we do it.
+
+1. Create a policy that `Allow`s all actions of the AWS service (`ec2:*` for example) specific to the Terraform resource you want to create. Now assuming you have all the permissions to do what Terraform needs to do...
+2. From the tf root within the project, run `terraform plan` then `terraform apply`
+3. Browse to the CloudTrail Event history, and wait for the logs to come through, this can take a while (aprx 15-20 minutes). Filter on User name of [your-aws-cli-profile], you can also add another filter of Event source for the resource you want to see. Now you can copy the Event names of each log event along with the Event source prefix (`ec2` for example) and add to the `Allow`d `Action` array in the policy you want to modify. Then remove the wildcard action (`ec2:*` for example)
+4. Try step 2 again, you may need to run `terraform destroy` first. If you get an error with a `Encoded authorization failure message`:  
+   1. You will need to add the `sts:DecodeAuthorizationMessage` action to a policy that your user has
+   2. Then to retreive the decoded error run the following command:  
+     `aws sts decode-authorization-message --encoded-message [encodedmessage] --profile [your-aws-cli-profile]`  
+     Details on this and interpreting the output can be found under the heading "Using DecodeAuthorizationMessage to troubleshoot permissions" [here](https://aws.amazon.com/blogs/security/demystifying-ec2-resource-level-permissions/)
+
+Details for more granular policies:
+
+* https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ExamplePolicies_EC2.html
+* https://github.com/hashicorp/terraform/issues/2834
+
+# CloudWatch
+
+To make reading logs easier [set the time zone to local](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/modify_graph_date_time.html#set-time-zone-Cloudwatch-graph)
+
+# Useful Resources
+
+* Terraform [best practises and naming conventions](https://www.terraform-best-practices.com/naming)
+* [Why Terraform over CloudFormation](https://hackernoon.com/your-infrastructure-as-code-cloudformation-vs-terraform-34ec5fb5f044)
