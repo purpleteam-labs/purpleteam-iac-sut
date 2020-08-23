@@ -25,9 +25,14 @@ module "domainNames" {
   purpleteamlabs_sut_cname = var.purpleteamlabs_sut_cname
   purpleteamlabs_cloudflare_dns_zone_id = var.purpleteamlabs_cloudflare_dns_zone_id
   stages = module.apis.stages
-  aws_api_gateway_rest_api_sut_id = module.apis.aws_api_gateway_rest_api_sut_id
+  aws_api_gateway_rest_api_suts = module.apis.aws_api_gateway_rest_api_suts
   stage_values = var.stage_values
+  suts_attributes = var.suts_attributes
 }
+
+
+
+
 /*
 module "usagePlans" {
   source = "../../modules/common/aws/network/apiGateway/apis/usagePlans"

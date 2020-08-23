@@ -2,13 +2,11 @@ resource "aws_api_gateway_account" "sut" {
   cloudwatch_role_arn = var.api_gateway_cloudwatch_role
 }
 
-resource "random_id" "id" {
-	byte_length = 8
-}
-
 resource "aws_api_gateway_rest_api" "sut" {
-  name        = "sut-api-${random_id.id.hex}" // Allows us to create duplicate APIs if necessary.
-  description = "Purpleteam SUT API"
+  for_each = var.suts_attributes
+
+  name        = "${each.value.name}-sut-api"
+  description = "${each.value.name} SUT API"
   endpoint_configuration {
     types = ["EDGE"]
   }
@@ -17,28 +15,32 @@ resource "aws_api_gateway_rest_api" "sut" {
 ///////////////////////////
 // Resources (Routes)
 ///////////////////////////
-resource "aws_api_gateway_resource" "sut" {
-  for_each = var.suts_attributes
-
-  rest_api_id = aws_api_gateway_rest_api.sut.id
-  parent_id   = aws_api_gateway_rest_api.sut.root_resource_id
-  path_part   = lookup(each.value, "id")
-}
 resource "aws_api_gateway_resource" "proxy_plus" {
   for_each = var.suts_attributes
 
-  rest_api_id = aws_api_gateway_rest_api.sut.id
-  parent_id   = aws_api_gateway_resource.sut[each.key].id
+  rest_api_id = aws_api_gateway_rest_api.sut[each.key].id
+  parent_id   = aws_api_gateway_rest_api.sut[each.key].root_resource_id
   path_part   = "{proxy+}"
 }
 
 ///////////////////////////
 // Methods (HTTP Verbs)
 ///////////////////////////
-resource "aws_api_gateway_method" "sut" {
+resource "aws_api_gateway_method" "root_get" {
   for_each = var.suts_attributes
 
-  rest_api_id          = aws_api_gateway_rest_api.sut.id
+  rest_api_id          = aws_api_gateway_rest_api.sut[each.key].id
+  resource_id          = aws_api_gateway_rest_api.sut[each.key].root_resource_id
+  http_method          = "GET"
+  authorization        = "NONE"
+  api_key_required     = false
+  request_parameters   = {}
+}
+
+resource "aws_api_gateway_method" "proxy_plus_any" {
+  for_each = var.suts_attributes
+
+  rest_api_id          = aws_api_gateway_rest_api.sut[each.key].id
   resource_id          = aws_api_gateway_resource.proxy_plus[each.key].id
   http_method          = "ANY"
   authorization        = "NONE"
@@ -49,16 +51,33 @@ resource "aws_api_gateway_method" "sut" {
 ///////////////////////////
 // Integrations
 ///////////////////////////
-resource "aws_api_gateway_integration" "sut" {
+resource "aws_api_gateway_integration" "root_get" {
   for_each = var.suts_attributes
 
   depends_on = [
-    aws_api_gateway_method.sut
+    aws_api_gateway_method.root_get
   ]
 
-  rest_api_id = aws_api_gateway_rest_api.sut.id
+  rest_api_id = aws_api_gateway_rest_api.sut[each.key].id
+  resource_id = aws_api_gateway_rest_api.sut[each.key].root_resource_id
+  http_method = aws_api_gateway_method.root_get[each.key].http_method
+  type        = "HTTP_PROXY"
+  uri         = "http://$${stageVariables.nlbUrl}:${each.value.sut_lb_listener_port}/"
+  integration_http_method = "GET"
+  connection_type = "VPC_LINK"
+  connection_id = "$${stageVariables.vpcLinkId}"
+}
+
+resource "aws_api_gateway_integration" "proxy_plus_any" {
+  for_each = var.suts_attributes
+
+  depends_on = [
+    aws_api_gateway_method.proxy_plus_any
+  ]
+
+  rest_api_id = aws_api_gateway_rest_api.sut[each.key].id
   resource_id = aws_api_gateway_resource.proxy_plus[each.key].id
-  http_method = aws_api_gateway_method.sut[each.key].http_method
+  http_method = aws_api_gateway_method.proxy_plus_any[each.key].http_method
   type        = "HTTP_PROXY"
   uri         = "http://$${stageVariables.nlbUrl}:${each.value.sut_lb_listener_port}/{proxy}"
   integration_http_method = "ANY"
@@ -71,12 +90,25 @@ resource "aws_api_gateway_integration" "sut" {
 ///////////////////////////
 // Method Responses
 ///////////////////////////
-resource "aws_api_gateway_method_response" "sut" {
+resource "aws_api_gateway_method_response" "root_get" {
   for_each = var.suts_attributes
 
-  rest_api_id = aws_api_gateway_rest_api.sut.id
+  rest_api_id = aws_api_gateway_rest_api.sut[each.key].id
+  resource_id = aws_api_gateway_rest_api.sut[each.key].root_resource_id
+  http_method = aws_api_gateway_method.root_get[each.key].http_method
+  status_code = "200"
+
+  # response_models = {
+  #   "application/json" = "Empty"
+  # }
+}
+
+resource "aws_api_gateway_method_response" "proxy_plus_any" {
+  for_each = var.suts_attributes
+
+  rest_api_id = aws_api_gateway_rest_api.sut[each.key].id
   resource_id = aws_api_gateway_resource.proxy_plus[each.key].id
-  http_method = aws_api_gateway_method.sut[each.key].http_method
+  http_method = aws_api_gateway_method.proxy_plus_any[each.key].http_method
   status_code = "200"
 
   # response_models = {
@@ -87,13 +119,13 @@ resource "aws_api_gateway_method_response" "sut" {
 ///////////////////////////
 // Integration Responses
 ///////////////////////////
-resource "aws_api_gateway_integration_response" "sut" {
+resource "aws_api_gateway_integration_response" "root_get" {
   for_each = var.suts_attributes
 
-  rest_api_id = aws_api_gateway_rest_api.sut.id
-  resource_id = aws_api_gateway_resource.proxy_plus[each.key].id
-  http_method = aws_api_gateway_method.sut[each.key].http_method
-  status_code = aws_api_gateway_method_response.sut[each.key].status_code
+  rest_api_id = aws_api_gateway_rest_api.sut[each.key].id
+  resource_id = aws_api_gateway_rest_api.sut[each.key].root_resource_id
+  http_method = aws_api_gateway_method.root_get[each.key].http_method
+  status_code = aws_api_gateway_method_response.root_get[each.key].status_code
 
   //selection_pattern = "" // default
 
@@ -102,8 +134,26 @@ resource "aws_api_gateway_integration_response" "sut" {
   # } 
 
   depends_on = [
-    aws_api_gateway_integration.sut//,
-    //aws_api_gateway_method_response.sut
+    aws_api_gateway_integration.root_get
+  ]
+}
+
+resource "aws_api_gateway_integration_response" "proxy_plus_any" {
+  for_each = var.suts_attributes
+
+  rest_api_id = aws_api_gateway_rest_api.sut[each.key].id
+  resource_id = aws_api_gateway_resource.proxy_plus[each.key].id
+  http_method = aws_api_gateway_method.proxy_plus_any[each.key].http_method
+  status_code = aws_api_gateway_method_response.proxy_plus_any[each.key].status_code
+
+  //selection_pattern = "" // default
+
+  # response_templates = {
+  #   "application/json" = ""
+  # } 
+
+  depends_on = [
+    aws_api_gateway_integration.proxy_plus_any
   ]
 }
 
@@ -111,10 +161,13 @@ resource "aws_api_gateway_integration_response" "sut" {
 // Deployment
 ///////////////////////////
 resource "aws_api_gateway_deployment" "sut_deploy" {
+  for_each = var.suts_attributes
+
   depends_on  = [
-    aws_api_gateway_integration.sut    
+    aws_api_gateway_integration.root_get,
+    aws_api_gateway_integration.proxy_plus_any
   ]
-  rest_api_id = aws_api_gateway_rest_api.sut.id
+  rest_api_id = aws_api_gateway_rest_api.sut[each.key].id
   // Doc: Discussion around why setting a stage_name here doesn't work:
   //   https://github.com/terraform-providers/terraform-provider-aws/issues/1153
   //   https://github.com/terraform-providers/terraform-provider-aws/issues/2918
@@ -128,7 +181,8 @@ resource "aws_api_gateway_deployment" "sut_deploy" {
   lifecycle { create_before_destroy = true }
   triggers = {
     redeployment = sha1(join(",", list(
-      jsonencode(aws_api_gateway_integration.sut),
+      jsonencode(aws_api_gateway_integration.root_get),
+      jsonencode(aws_api_gateway_integration.proxy_plus_any)
     )))
   }
 }
@@ -143,10 +197,10 @@ module "cloudwatchLogGroupsAccessLogs" {
   source = "../../../managementGovernance/cloudWatch/logGroupsViaMap"
 
   values = {
-    for stage_key, stage_val in var.stage_values:
-    stage_key => {
-      log_group_name: "API-Gateway-Access-Logs_${aws_api_gateway_rest_api.sut.id}/${stage_key}"
-      retention_in_days: stage_val.access_log_group_retention_in_days
+    for k, v in aws_api_gateway_rest_api.sut:
+    k => {
+      log_group_name: "API-Gateway-Access-Logs_${v.id}/one_and_only_stage"
+      retention_in_days: var.stage_values["one_and_only_stage"].access_log_group_retention_in_days
     }
   }
 }
@@ -154,10 +208,10 @@ module "cloudwatchLogGroupsExecutionLogs" {
   source = "../../../managementGovernance/cloudWatch/logGroupsViaMap"
 
   values = {
-    for stage_key, stage_val in var.stage_values:
-    stage_key => {
-      log_group_name: "API-Gateway-Execution-Logs_${aws_api_gateway_rest_api.sut.id}/${stage_key}"
-      retention_in_days: stage_val.execution_log_group_retention_in_days
+    for k, v in aws_api_gateway_rest_api.sut:
+    k => {
+      log_group_name: "API-Gateway-Execution-Logs_${v.id}/one_and_only_stage"
+      retention_in_days: var.stage_values["one_and_only_stage"].access_log_group_retention_in_days
     }
   }
 }
@@ -166,15 +220,15 @@ module "cloudwatchLogGroupsExecutionLogs" {
 // Stage
 ///////////////////////////
 resource "aws_api_gateway_stage" "sut" {
-  for_each = var.stage_values
+  for_each = var.suts_attributes
 
   depends_on = [
     module.cloudwatchLogGroupsAccessLogs.cloudwatch_log_groups,
     module.cloudwatchLogGroupsExecutionLogs.cloudwatch_log_groups
   ]
-  stage_name    = each.key
-  rest_api_id   = aws_api_gateway_rest_api.sut.id
-  deployment_id = aws_api_gateway_deployment.sut_deploy.id
+  stage_name    = "one_and_only_stage"
+  rest_api_id   = aws_api_gateway_rest_api.sut[each.key].id
+  deployment_id = aws_api_gateway_deployment.sut_deploy[each.key].id
 
   access_log_settings {
     destination_arn = module.cloudwatchLogGroupsAccessLogs.cloudwatch_log_groups[each.key].arn
@@ -199,20 +253,20 @@ resource "aws_api_gateway_stage" "sut" {
 }
 
 resource "aws_api_gateway_method_settings" "sut" {
-  for_each = var.stage_values
+  for_each = var.suts_attributes
 
   depends_on = [aws_api_gateway_stage.sut]
 
-  rest_api_id = aws_api_gateway_rest_api.sut.id
-  stage_name  = each.key
+  rest_api_id = aws_api_gateway_rest_api.sut[each.key].id
+  stage_name = "one_and_only_stage"
 
   // Doc for enabling logging for stage: https://github.com/terraform-providers/terraform-provider-aws/issues/4448
   method_path = "*/*"
 
   // Stages settings
   settings {
-    metrics_enabled    = each.value.settings.metrics_enabled
-    data_trace_enabled = each.value.settings.data_trace_enabled
-    logging_level      = each.value.settings.logging_level
+    metrics_enabled    = var.stage_values["one_and_only_stage"].settings.metrics_enabled
+    data_trace_enabled = var.stage_values["one_and_only_stage"].settings.data_trace_enabled
+    logging_level      = var.stage_values["one_and_only_stage"].settings.logging_level
   }
 }

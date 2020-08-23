@@ -47,6 +47,7 @@ variable "suts_attributes" {
     // Populate with properties as required
     id = number
     sut_lb_listener_port = number
+    name: string
   }))
 }
 
