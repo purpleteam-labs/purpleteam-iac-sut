@@ -95,8 +95,9 @@ In the `roots` directory:
 * Locate and rename the `common_vars.example.yaml` file to `common_vars.yaml` and configure the values within
   * You will need a domain
   * For the first (default) SUT we are using ([NodeGoat](https://github.com/OWASP/NodeGoat))
-    * You should be able to see the hosted version running at [https://nodegoat.herokuapp.com/](https://nodegoat.herokuapp.com/)
-    * Once this project is `apply`ed you should be able to see NodeGoat running at [https://nodegoat.sut.<your-domain-name.com>/](https://nodegoat.sut.your-domain-name.com/)
+    * Chetan Karande maintains a hosted version running at [https://nodegoat.herokuapp.com/](https://nodegoat.herokuapp.com/)
+    * Once this project is `apply`ed you should be able to see NodeGoat running at [https://nodegoat.sut.<your-domain-name.com>](https://nodegoat.sut.your-domain-name.com)  
+      For the case of purpleteam-labs, that will be [https://nodegoat.sut.purpleteam-labs.com](https://nodegoat.sut.purpleteam-labs.com). Currently we only have this instance running during our testing
   * Add as many or few SUTs as you require
 * Locate and rename the `terragrunt.example.hcl` file to `terragrunt.hcl` and configure the values within
 
