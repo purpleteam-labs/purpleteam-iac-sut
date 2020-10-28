@@ -11,6 +11,7 @@ Content-Type: text/x-shellscript; charset="us-ascii"
 cat <<'EOF' >> /etc/ecs/ecs.config
 ECS_CLUSTER=${ecs_cluster}
 ECS_LOGLEVEL=debug
+ECS_RESERVED_MEMORY=128
 # Tags added to EC2 instances that are launched using Auto Scaling groups: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/launch_container_instance.html
 ECS_CONTAINER_INSTANCE_TAGS={"Name": "sut-autoscaling-userdata", "source": "iac-contOrg-autoscaling"}
 #ECS_CONTAINER_INSTANCE_PROPAGATE_TAGS_FROM=ec2_instance
