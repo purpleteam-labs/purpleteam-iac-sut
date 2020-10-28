@@ -28,7 +28,7 @@ resource "aws_lb_target_group" "sut" {
   // deregistration_delay = 300 // Default.
 
   health_check {
-    interval            = "30"
+    interval            = "30" // Only 10 and 30 is supported for target groups with TCP protocol
     healthy_threshold   = "3"
     unhealthy_threshold = "3"
     protocol            = "HTTP"

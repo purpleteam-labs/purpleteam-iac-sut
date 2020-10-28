@@ -98,7 +98,7 @@
     "Healthcheck Comment": "This is the Healthcheck section................................................................",
     "healthCheck": {
       "retries": 3,
-      "command": [ "CMD-SHELL", "wget -s http://localhost:${container_port}/ || exit 1" ],
+      "command": [ "CMD-SHELL", "wget --spider http://localhost:${container_port}/ || exit 1" ],
       "timeout": 3,
       "interval": 20,
       "startPeriod": 8
