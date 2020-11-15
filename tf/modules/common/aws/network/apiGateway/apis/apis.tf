@@ -248,7 +248,7 @@ resource "aws_api_gateway_stage" "sut" {
 
   variables = {
     vpcLinkId = var.vpc_link_sut_nlb_id
-    nlbUrl = "${var.aws_lb_dns_name}"
+    nlbUrl = var.aws_lb_dns_name
   }
 }
 

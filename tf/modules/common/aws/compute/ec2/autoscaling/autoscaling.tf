@@ -1,9 +1,9 @@
 data "template_file" "autoscaling_user_data" {
   for_each = var.suts_attributes
 
-  template = "${file("${path.module}/userData/userData.tpl")}"
+  template = file("${path.module}/userData/userData.tpl")
   vars = {
-    ecs_cluster = "${each.key}"
+    ecs_cluster = each.key
   }
 }
 
@@ -68,7 +68,7 @@ resource "aws_autoscaling_group" "sut" {
   min_size           = 1
   force_delete = true
 
-  target_group_arns = ["${var.aws_lb_target_groups[each.key].arn}"]
+  target_group_arns = [var.aws_lb_target_groups[each.key].arn]
 
   vpc_zone_identifier = lookup(var.suts_attributes[each.key], "public_subnet_ids")
 

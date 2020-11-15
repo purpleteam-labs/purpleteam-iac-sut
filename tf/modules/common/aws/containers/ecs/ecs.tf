@@ -16,7 +16,7 @@ locals {
 data "template_file" "sut" {
   for_each = var.suts_attributes
 
-  template = "${file("${path.module}/taskDefinitions/${each.key}.tpl")}"
+  template = file("${path.module}/taskDefinitions/${each.key}.tpl")
 
   vars = {
     container_name = each.value.name

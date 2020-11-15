@@ -5,7 +5,7 @@ include {
 }
 
 locals {
-  common_vars = yamldecode(file("${get_terragrunt_dir()}/${find_in_parent_folders("common_vars.yaml")}"))
+  common_vars = yamldecode(file("${find_in_parent_folders("common_vars.yaml")}"))
   // More locals here ...
 }
 
