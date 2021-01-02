@@ -6,10 +6,16 @@
   <br/>
 <br/>
 <h2>purpleteam infrastructure as code for systems under test (SUTs)</h2><br/>
+This is what purpleteam uses to set-up systems to attack and test that it's working as we think it should. Feel free to run yourself if you are taking purpleteam for a test drive, or just want to attack some SUTs to hone your red teaming skills.
+<br/><br/>
 
+<a href="https://gitlab.com/purpleteam-labs/purpleteam-logger/blob/main/LICENSE" title="license">
+  <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="license"/>
+</a>
+
+<br/><br/><br/>
 </div>
 
-This is what purpleteam uses to set-up systems to attack and test that it's working as we think it should. Feel free to run yourself if you are taking purpleteam for a test drive, or just want to attack some SUTs to hone your red teaming skills.
 
 # ACM Certificate Quota
 
