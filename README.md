@@ -210,3 +210,12 @@ To make reading logs easier [set the time zone to local](https://docs.aws.amazon
 
 * Terraform [best practises and naming conventions](https://www.terraform-best-practices.com/naming)
 * [Why Terraform over CloudFormation](https://hackernoon.com/your-infrastructure-as-code-cloudformation-vs-terraform-34ec5fb5f044)
+
+## Contribution
+
+Please open an [issue](https://gitlab.com/purpleteam-labs/purpleteam/issues) to discus the proposed change before submitting a [merge request](https://gitlab.com/purpleteam-labs/purpleteam-iac-sut/-/merge_requests).
+
+## License
+
+Copyright Kim Carter and other contributors, Licensed under [MIT](https://gitlab.com/purpleteam-labs/purpleteam-logger/blob/main/LICENSE).
+
