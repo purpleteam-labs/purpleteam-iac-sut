@@ -47,7 +47,7 @@
     "zaproxy"
   ],
   "author": "Kim Carter",
-  "license": "",
+  "license": "MIT",
   "bugs": {
     "url": "https://gitlab.com/purpleteam-labs/purpleteam-iac-sut/issues"
   },
