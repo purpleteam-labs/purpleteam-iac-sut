@@ -223,5 +223,5 @@ Please open an [issue](https://github.com/purpleteam-labs/purpleteam/issues) to 
 
 ## License
 
-Copyright Kim Carter and other contributors, Licensed under [MIT](https://github.com/purpleteam-labs/purpleteam-iac-sut/blob/main/LICENSE).
+Copyright [Kim Carter](https://binarymist.io), Licensed under [MIT](https://github.com/purpleteam-labs/purpleteam-iac-sut/blob/main/LICENSE).
 
