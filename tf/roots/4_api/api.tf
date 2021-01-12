@@ -1,3 +1,15 @@
+// Copyright (C) 2017-2021 BinaryMist Limited. All rights reserved.
+
+// This file is part of purpleteam.
+
+// purpleteam is free software: you can redistribute it and/or modify
+// it under the terms of the MIT License.
+
+// purpleteam is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MIT License for more details.
+
 // Doc:
 //   [Build an API with API Gateway Private Integration](https://docs.aws.amazon.com/apigateway/latest/developerguide/getting-started-with-private-integration.html)
 //   [Build an API with HTTP Proxy Integration](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-create-api-as-simple-proxy-for-http.html)
