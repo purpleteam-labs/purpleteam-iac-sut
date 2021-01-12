@@ -9,7 +9,7 @@
 This is what purpleteam uses to set-up systems to attack and test that it's working as we think it should. Feel free to run yourself if you are taking purpleteam for a test drive, or just want to attack some SUTs to hone your red teaming skills.
 <br/><br/>
 
-<a href="https://gitlab.com/purpleteam-labs/purpleteam-logger/blob/main/LICENSE" title="license">
+<a href="https://github.com/purpleteam-labs/purpleteam-iac-sut/blob/main/LICENSE" title="license">
   <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="license"/>
 </a>
 
@@ -115,7 +115,7 @@ In each root directory add and configure the following file if it doesn't exist:
 
 Optional: Set-up the terraform oh-my-zsh plugin. This will give you a prompt that displays which terraform workspace is selected, Ask Kim about this if unsure.
 
-Assuming the aws cli has been [configured](https://gitlab.com/purpleteam-labs/purpleteam/-/wikis/local/local-setup#validating-sam-templates)
+Assuming the aws cli has been [configured](https://github.com/purpleteam-labs/purpleteam-lambda/blob/main/README.md)
 
 Each terraform root aws provider (in the main.tf file, or each specific root `variables.tf`) needs to specify the correct aws `profile`, if this is not correct, you could clobber or destroy an incorrect set of infrastructure. This needs to be configured in a `.env` file in the top directory of this repository. The file contents will look like the following, adjust to suite your environment:
 
@@ -219,9 +219,9 @@ To make reading logs easier [set the time zone to local](https://docs.aws.amazon
 
 ## Contribution
 
-Please open an [issue](https://gitlab.com/purpleteam-labs/purpleteam/issues) to discus the proposed change before submitting a [merge request](https://gitlab.com/purpleteam-labs/purpleteam-iac-sut/-/merge_requests).
+Please open an [issue](https://github.com/purpleteam-labs/purpleteam/issues) to discus the proposed change before submitting a [pull request](https://github.com/purpleteam-labs/purpleteam-iac-sut/pulls).
 
 ## License
 
-Copyright Kim Carter and other contributors, Licensed under [MIT](https://gitlab.com/purpleteam-labs/purpleteam-logger/blob/main/LICENSE).
+Copyright Kim Carter and other contributors, Licensed under [MIT](https://github.com/purpleteam-labs/purpleteam-iac-sut/blob/main/LICENSE).
 
