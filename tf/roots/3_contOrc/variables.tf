@@ -39,18 +39,20 @@ variable "aws_lb_target_groups" {
   type = string
 }
 
-// ECS optimized AMIs change by region. You can lookup the AMI here:
-// https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html
+// Look up current ECS Container Agent Version: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-update.html
+// ECS optimized AMIs change by region. You can lookup the AMI here: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html
 //
 // Can get ami metadata: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/retrieve-ecs-optimized_AMI.html
 // aws ssm get-parameters --names /aws/service/ecs/optimized-ami/amazon-linux-2/recommended --region ap-southeast-2 --profile purpleteaming-cli
 //
 // ECS optimized AMIs per region
-// Updated July 2020
+// Amazon Linux 2
+// Updated Jan 14 2021
+// Once upgraded check the Container Agent Version again and that the AMI ID in the EC@ console has changed as specified.
 variable "ecs_image_id" {
   default = {
-    ap-southeast-1 = "ami-0bd1daf5da8a9a903" // Singapore
-    ap-southeast-2 = "ami-0a7c4f7f17d3eecbc" // Sydney
+    ap-southeast-1 = "ami-08ce8fab6f3298bec" // Singapore. Last modified date: Fri, 08 Jan 2021 21:47:53 GMT. Version 50
+    ap-southeast-2 = "ami-0e1f2642e8ed2b983" // Sydney. Last modified date: Fri, 08 Jan 2021 21:36:29 GMT. Version 50
   }
 }
 
