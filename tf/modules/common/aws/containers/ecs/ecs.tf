@@ -71,6 +71,12 @@ resource "aws_ecs_cluster" "sut" {
   for_each = var.suts_attributes
 
   name = each.key
+
+  setting {
+    name = "containerInsights"
+    value = "enabled"
+  }
+
   tags = {
     Name = "sut-ecs"
     source = local.tag_source
