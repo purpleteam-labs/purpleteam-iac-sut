@@ -99,7 +99,7 @@ Using the [Manual install](https://terragrunt.gruntwork.io/docs/getting-started/
 In the `roots` directory:
 
 * Locate and rename the `common_vars.example.yaml` file to `common_vars.yaml` and configure the values within
-  * You will need a domain
+  * You will need a domain and it's DNS configured in CloudFlare
   * For the first (default) SUT we are using ([NodeGoat](https://github.com/OWASP/NodeGoat))
     * Chetan Karande maintains a hosted version running at [https://nodegoat.herokuapp.com/](https://nodegoat.herokuapp.com/)
     * Once this project is `apply`ed you should be able to see NodeGoat running at [https://nodegoat.sut.<your-domain-name.com>](https://nodegoat.sut.your-domain-name.com)  
