@@ -51,7 +51,7 @@ inputs = {
 terraform {
   after_hook "delete_left_over_log_groups" {
     commands = ["destroy"]
-    execute = ["bash", "./deleteLeftOverLogGroups.sh", "${get_terragrunt_dir()}/${find_in_parent_folders(".env")}"]
+    execute = ["bash", "./deleteLeftOverLogGroups.sh", "${find_in_parent_folders(".env")}"]
     run_on_error = true
   }
 }
