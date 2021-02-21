@@ -34,9 +34,19 @@ resource "aws_s3_bucket_object" "sut_public_keys" {
   content = each.value
 }
 
+resource "aws_s3_bucket_public_access_block" "sut_public_keys" {
+  bucket = aws_s3_bucket.sut_public_keys.id
+  block_public_acls   = true
+  block_public_policy = true
+  ignore_public_acls = true
+  restrict_public_buckets = true
+}
+
 resource "aws_s3_bucket" "sut_public_keys_log" {
   bucket = "sut-public-keys-log"
   acl    = "log-delivery-write"
+
+  force_destroy = true
 
   lifecycle_rule {
     abort_incomplete_multipart_upload_days = 1
@@ -54,10 +64,8 @@ resource "aws_s3_bucket" "sut_public_keys_log" {
   }
 }
 
-resource "aws_s3_bucket_public_access_block" "sut_public_keys" {
-  for_each = toset([aws_s3_bucket.sut_public_keys.id, aws_s3_bucket.sut_public_keys_log.id])
-
-  bucket = each.value
+resource "aws_s3_bucket_public_access_block" "sut_public_keys_log" {
+  bucket = aws_s3_bucket.sut_public_keys_log.id
   block_public_acls   = true
   block_public_policy = true
   ignore_public_acls = true
