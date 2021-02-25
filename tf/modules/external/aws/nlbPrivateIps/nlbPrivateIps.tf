@@ -25,7 +25,7 @@ variable "profile" {
 }
 
 data "external" "get_nlb_ips" {
-  program = ["python", "${path.module}/getNlbPrivateIps.py"]
+  program = ["python3", "${path.module}/getNlbPrivateIps.py"]
   query = {
     aws_nlb_name  = var.nlb_name
     aws_vpc_id    = var.vpc_id
