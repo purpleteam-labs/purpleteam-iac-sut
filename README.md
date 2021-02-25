@@ -78,6 +78,16 @@ Check the following check boxes:
 [ECS container instances not connected to the cluster](https://aws.amazon.com/premiumsupport/knowledge-center/ecs-agent-disconnected/)  
 `systemctl status ecs` for the status of the ecs agent
 
+# Install [boto3](https://github.com/boto/boto3)
+
+The `nw` root uses python3 to run getNlbPrivateIps.py. pip3 needs to be installed to install boto3.
+
+1. [Install pip3 on Linux Mint](https://linuxhint.com/installing_pip_linux_mint/):
+   1. Confirm you have python3 installed by running: `python3 --version`
+   2. `sudo apt update && sudo apt install python3-pip`
+   3. Run `pip3 --version` to confirm you now have pip3 installed
+2. Install boto3 with: `pip3 install boto3`
+
 # Terraform
 
 The architecture of this Terraform project was inspired by [this Terraform talk](https://www.hashicorp.com/resources/evolving-infrastructure-terraform-opencredo). The [how we organize terraform code at 2nd watch](https://www.2ndwatch.com/blog/how-we-organize-terraform-code-at-2nd-watch/) blog post also played a small part.
