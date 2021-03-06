@@ -74,7 +74,7 @@ resource "aws_ecs_cluster" "sut" {
 
   setting {
     name = "containerInsights"
-    value = "enabled"
+    value = "disabled"
   }
 
   tags = {
