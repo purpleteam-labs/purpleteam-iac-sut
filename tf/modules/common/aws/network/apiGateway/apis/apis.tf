@@ -192,10 +192,10 @@ resource "aws_api_gateway_deployment" "sut_deploy" {
   //   Doc: This issue (https://github.com/hashicorp/terraform/issues/6613) lead to the above one.
   lifecycle { create_before_destroy = true }
   triggers = {
-    redeployment = sha1(join(",", list(
+    redeployment = sha1(join(",", tolist([
       jsonencode(aws_api_gateway_integration.root_get),
       jsonencode(aws_api_gateway_integration.proxy_plus_any)
-    )))
+    ])))
   }
 }
 
