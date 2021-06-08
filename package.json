@@ -53,5 +53,6 @@
   },
   "homepage": "https://gitlab.com/purpleteam-labs/purpleteam-iac-sut#README",
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {},
+  "files": []
 }
