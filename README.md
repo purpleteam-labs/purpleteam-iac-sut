@@ -20,6 +20,38 @@ This is what purpleteam uses to set-up systems to attack and test that it's work
 <br/><br/><br/>
 </div>
 
+# AWS Account Provisioning
+
+* Set-up email account
+
+As Root Account:
+
+* Change [Payment Currency Preference](https://console.aws.amazon.com/billing/home?#/account) to your currency
+* Configure Security Challenge Questions
+* Activate IAM User and Role Access to Billing Information
+* Enable MFA
+* Record account ID and Canonical User ID in password manager
+* [Disable Security Token Service (STS)](https://console.aws.amazon.com/iam/home?region=ap-southeast-2#/account_settings) for all regions we don't need
+* [Launch Cost Explorer](https://console.aws.amazon.com/billing/home?#/costexplorer)
+* [Billing Preferences](https://console.aws.amazon.com/billing/home?#/preferences): Turn on:
+   * Receive PDF Invoice By Email
+   * Receive Free Tier Usage Alerts - add email address
+   * Receive Billing Alerts
+* Create a Cost [Budget](https://console.aws.amazon.com/billing/home?#/budgets/overview) for Monthly with alerts:
+   * Threshold: 50% of budgeted amount, Trigger: Actual, Email recipients: you
+   * Threshold: 100% of budgeted amount, Trigger: Forecasted, Email recipients: you, 2IC
+   * Threshold: 100% of budgeted amount, Trigger: Actual, Email recipients: you, 2IC
+
+1. Create User groups
+2. Create Permissions/Policies
+3. Add policies to respective Groups
+4. Add IAM user
+   * Add user to group(s)
+   * Assign MFA
+5. Add CLI IAM user
+   * Add user to group(s)
+   * Create Access keys for devices that need access
+   * Apply Access keys to said devices
 
 # ACM Certificate Quota
 
@@ -31,10 +63,6 @@ Make sure this is set to 2000 per region where we require certificates, submit s
 * Region: US East (Northern Virginia)  
   Limit: Number of ACM certificates  
   New limit value: 2000
-
-# AWS Policies
-
-Set these up.
 
 # ECS
 
