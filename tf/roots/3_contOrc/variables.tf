@@ -25,7 +25,7 @@ provider "aws" {
 }
 
 // Issue around removing tf warnings for undeclared variables: https://github.com/hashicorp/terraform/issues/22004
-variable "AWS_ACCOUNT_ID" { description = "Not used. Is here to stop Terraform warnings." }
+variable "AWS_ACCOUNT_ID" { description = "Used in ECS." }
 
 variable "cloudflare_account_id" { description = "Not used. Is here to stop Terraform warnings." }
 variable "cloudflare_api_token" { description = "Not used. Is here to stop Terraform warnings." }

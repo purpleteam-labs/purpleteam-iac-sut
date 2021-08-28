@@ -6,7 +6,7 @@
   <br/>
 <br/>
 <h2>purpleteam infrastructure as code for systems under test (SUTs)</h2><br/>
-This is what purpleteam uses to set-up systems to attack and test that it's working as we think it should. Feel free to run yourself if you are taking purpleteam for a test drive, or just want to attack some SUTs to hone your red teaming skills.
+This is what PurpleTeam-Labs uses to set-up systems to attack and test that it's working as we think it should. Feel free to run yourself if you are taking <em>PurpleTeam</em> for a test drive, or just want to attack some <em>SUT</em>s to hone your red teaming skills.
 <br/><br/>
 
 <a href="https://github.com/purpleteam-labs/purpleteam-iac-sut/blob/main/LICENSE" title="license">
@@ -43,7 +43,7 @@ As Root Account:
    * Threshold: 100% of budgeted amount, Trigger: Actual, Email recipients: you, 2IC
 
 1. Create User groups
-2. Create Permissions/Policies
+2. Create Permissions/Policies - update account Ids in source controlled policies before applying
 3. Add policies to respective Groups
 4. Add IAM user
    * Add user to group(s)
@@ -134,6 +134,8 @@ The implementation of this Terraform project was [inspired](https://github.com/f
 
 Hashicorp GPG pub key on [hashicorp](https://www.hashicorp.com/security), on [keybase](https://keybase.io/hashicorp#show-public)
 
+Or on Linux via the package sources. Details [here](https://www.terraform.io/docs/cli/install/apt.html).
+
 # Install [Terragrunt](https://terragrunt.gruntwork.io/) and configure
 
 Using the [Manual install](https://terragrunt.gruntwork.io/docs/getting-started/install/#manual-install), similar to installing Terraform.
@@ -142,11 +144,11 @@ In the `roots` directory:
 
 * Locate and rename the `common_vars.example.yaml` file to `common_vars.yaml` and configure the values within
   * You will need a domain and it's DNS configured in CloudFlare
-  * For the first (default) SUT we are using ([NodeGoat](https://github.com/OWASP/NodeGoat))
+  * For the first (default) _SUT_ we are using ([NodeGoat](https://github.com/OWASP/NodeGoat))
     * Chetan Karande maintains a hosted version running at [https://nodegoat.herokuapp.com/](https://nodegoat.herokuapp.com/)
     * Once this project is `apply`ed you should be able to see NodeGoat running at [https://nodegoat.sut.<your-domain-name.com>](https://nodegoat.sut.your-domain-name.com)  
       For the case of purpleteam-labs, that will be [https://nodegoat.sut.purpleteam-labs.com](https://nodegoat.sut.purpleteam-labs.com). Currently we only have this instance running during our testing
-  * Add as many or few SUTs as you require
+  * Add as many or few <em>SUT</em>s as you require
 * Locate and rename the `terragrunt.example.hcl` file to `terragrunt.hcl` and configure the values within
 
 In each root directory add and configure the following file if it doesn't exist:
@@ -166,8 +168,7 @@ Each terraform root aws provider (in the main.tf file, or each specific root `va
 # Used in terragrunt.hcl to load these values into roots that require them. Double quotes are required by Terraform, otherwise it trys to interpret the values as variables. 
 AWS_REGION="your-aws-region"
 AWS_PROFILE="your-aws-profile"
-# The following variable is only used in the buildAndDeployCloudImages.sh
-AWS_ACCOUNT_ID=your-aws-account-id
+AWS_ACCOUNT_ID="your-aws-account-id"
 ```
 
 The above values are read into all Terraform roots that specify the variables. This can be seen in the `extra_arguments "custom_env_vars_from_file"` block within the `terraform` block of the `terragrunt.hcl` in the `roots` directory.
@@ -193,16 +194,20 @@ When creating a new Terraform root (or possibly even just workspace), make sure 
 
 This is required to push images to ECR.
 
-When I did this, the package wasn't available for my distro, so I just downloaded the [latest binary](https://github.com/awslabs/amazon-ecr-credential-helper/releases/) and put it in the same place as terraform and symlinked it.  
-You'll also need to add the following to `~/.docker/config.json`  
+When we did this, the package wasn't available for our distro, so we just:
 
-```json
-{
-  "credHelpers": {
-    "your_aws_account_id_here.dkr.ecr.your_aws_region_here.amazonaws.com": "ecr-login"
+1. Download the [latest binary](https://github.com/awslabs/amazon-ecr-credential-helper/releases/)
+2. Checksum it
+3. Rename it to `docker-credential-ecr-login`
+4. Put it in `/opt/` and symlink it to `/usr/local/bin/docker-credential-ecr-login`
+5. You'll also need to add the following to `~/.docker/config.json`  
+  ```json
+  {
+    "credHelpers": {
+      "your_aws_account_id_here.dkr.ecr.your_aws_region_here.amazonaws.com": "ecr-login"
+    }
   }
-}
-```
+  ```
 
 Above details and more found [here](https://github.com/awslabs/amazon-ecr-credential-helper). If you have issues authenticating with ECR, follow [these steps](https://github.com/awslabs/amazon-ecr-credential-helper/issues/63#issuecomment-328318116).
 
@@ -223,12 +228,12 @@ The following are the Terraform roots in this project and the order in which the
      `npm run buildAndDeploySUTCloudImages`
 2. **nw** (network, VPC, load balancer, api certificates, api subdomain)
 3. **contOrc** (SSH pub keys, EC2 Cloudwatch log groups, ECS, autoscaling)
-4. **api** (SUT APIs (Api Gateway), Cloudwatch log groups, VpcLink, SUT subdomain(s))
+4. **api** (_SUT_ APIs (Api Gateway), Cloudwatch log groups, VpcLink, _SUT_ subdomain(s))
 
 Each root's dependencies are defined in their `terragrunt.hcl`.  
-The roots applied earliest require the least amount of ongoing changes making for faster iterative development of the later roots, for example the static root hardly ever needs re`apply`ing, the nw root usually only needs re`apply`ing when a SUT is added/removed/or with nw related modification.
+The roots applied earliest require the least amount of ongoing changes making for faster iterative development of the later roots, for example the static root hardly ever needs re`apply`ing, the nw root usually only needs re`apply`ing when a _SUT_ is added/removed/or with nw related modification.
 
-When we add or remove a SUT, the `nw` root onwards will need to be re-applied.
+When we add or remove a _SUT_, the `nw` root onwards will need to be re-applied.
 
 We use [Terraform Cloud](https://www.terraform.io/docs/cloud/free/index.html) to [store our state remotely](https://www.hashicorp.com/blog/introducing-terraform-cloud-remote-state-management/) so each developer can [collaborate with a single source of state](https://www.hashicorp.com/blog/terraform-collaboration-for-everyone/)
 
