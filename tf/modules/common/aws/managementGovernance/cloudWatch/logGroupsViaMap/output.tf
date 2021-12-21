@@ -1,11 +1,11 @@
-// Copyright (C) 2017-2021 BinaryMist Limited. All rights reserved.
+// Copyright (C) 2017-2022 BinaryMist Limited. All rights reserved.
 
-// This file is part of PurpleTeam.
+// This file is ancillary to PurpleTeam.
 
-// PurpleTeam is free software: you can redistribute it and/or modify
+// purpleteam-iac-sut is free software: you can redistribute it and/or modify
 // it under the terms of the MIT License.
 
-// PurpleTeam is distributed in the hope that it will be useful,
+// purpleteam-iac-sut is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // MIT License for more details.

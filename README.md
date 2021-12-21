@@ -9,7 +9,7 @@
 This is what PurpleTeam-Labs uses to set-up systems to attack and test that it's working as we think it should. Feel free to run yourself if you are taking <em>PurpleTeam</em> for a test drive, or just want to attack some <em>SUT</em>s to hone your red teaming skills.
 <br/><br/>
 
-<a href="https://github.com/purpleteam-labs/purpleteam-iac-sut/blob/main/LICENSE" title="license">
+<a href="https://github.com/purpleteam-labs/purpleteam-iac-sut/blob/main/licenses/mit.md" title="license">
   <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="license"/>
 </a>
 
