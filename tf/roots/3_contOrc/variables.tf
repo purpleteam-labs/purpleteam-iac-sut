@@ -47,11 +47,11 @@ variable "aws_lb_target_groups" {
 //
 // ECS optimized AMIs per region
 // Amazon Linux 2
-// Once upgraded check the Container Agent Version again and that the AMI ID in the EC@ console has changed as specified.
+// Once upgraded check the Container Agent Version again and that the AMI ID in the EC2 console has changed as specified.
 variable "ecs_image_id" {
   default = {
-    ap-southeast-1 = "ami-01eadf33e58113fa2" // Singapore. Last modified date: Fri, 21 May 2021 23:08:18 GMT. Version 62
-    ap-southeast-2 = "ami-0ce714360ecb86a7b" // Sydney. Last modified date: Fri, 21 May 2021 22:58:26 GMT. Version 62
+    ap-southeast-1 = "ami-0d7046e1d357b6b85" // Singapore. Last modified date: Fri, 10 Dec 2021 00:20:09 GMT. Version 78
+    ap-southeast-2 = "ami-0ecac5dc97c76f51d" // Sydney. Last modified date: Fri, 10 Dec 2021 00:20:01 GMT. Version 78
   }
 }
 
