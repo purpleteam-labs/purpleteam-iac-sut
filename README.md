@@ -52,6 +52,7 @@ As Root Account:
    * Add user to group(s)
    * Create Access keys for devices that need access
    * Apply Access keys to said devices
+6. Update environment variables in .env of purpleteam-iac-sut project. The easiest way to do this is to rename the .env.example to .env and replace the dummy values
 
 # ACM Certificate Quota
 
@@ -161,15 +162,9 @@ Optional: Set-up the terraform oh-my-zsh plugin. This will give you a prompt tha
 
 Assuming the aws cli has been [configured](https://github.com/purpleteam-labs/purpleteam-lambda/blob/main/README.md)
 
-Each terraform root aws provider (in the main.tf file, or each specific root `variables.tf`) needs to specify the correct aws `profile`, if this is not correct, you could clobber or destroy an incorrect set of infrastructure. This needs to be configured in a `.env` file in the top directory of this repository. The file contents will look like the following, adjust to suite your environment:
-
-```shell
-# Used in buildAndDeployCloudImages.sh via npm script
-# Used in terragrunt.hcl to load these values into roots that require them. Double quotes are required by Terraform, otherwise it trys to interpret the values as variables. 
-AWS_REGION="your-aws-region"
-AWS_PROFILE="your-aws-profile"
-AWS_ACCOUNT_ID="your-aws-account-id"
-```
+Each terraform root aws provider (in the main.tf file, or each specific root `variables.tf`) needs to specify the correct aws `profile`,
+if this is not correct, you could clobber or destroy an incorrect set of infrastructure.
+This needs to be configured in a `.env` file in the top directory of this repository. Replace the angle bracket dummy values of the .env.example file you renamed to .env with values to suite your environment.
 
 The above values are read into all Terraform roots that specify the variables. This can be seen in the `extra_arguments "custom_env_vars_from_file"` block within the `terraform` block of the `terragrunt.hcl` in the `roots` directory.
 
